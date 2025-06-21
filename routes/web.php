@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\LocationController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -20,5 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/drivers', [DriverController::class, 'index'])->name('drivers.index');
+Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
 
 require __DIR__.'/auth.php';

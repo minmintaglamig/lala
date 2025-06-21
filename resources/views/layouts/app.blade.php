@@ -12,21 +12,32 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+<body class="font-sans antialiased bg-gray-100">
 
-        @hasSection('header')
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    @include('layouts.navigation')
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-white shadow-md p-6 space-y-4">
+            <h2 class="text-lg font-bold text-orange-600 mb-4">Sections</h2>
+            <nav class="flex flex-col space-y-2 text-gray-700">
+                <a href="{{ route('drivers.index') }}" class="hover:text-orange-600">Drivers</a>
+                <a href="{{ route('vehicles.index') }}" class="hover:text-orange-600">Vehicles</a>
+                <a href="{{ route('jobs.index') }}" class="hover:text-orange-600">Jobs</a>
+                <a href="{{ route('locations.index') }}" class="hover:text-orange-600">Location</a>
+            </nav>
+        </aside>
+
+        <div class="flex-1 p-6">
+            @hasSection('header')
+                <header class="mb-4 border-b pb-2">
                     @yield('header')
-                </div>
-            </header>
-        @endif
+                </header>
+            @endif
 
-        <main>
-            @yield('content')
-        </main>
+            <main>
+                @yield('content')
+            </main>
+        </div>
     </div>
 </body>
 </html>
