@@ -1,29 +1,24 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
-
-        {{-- Name --}}
         <div>
             <x-input-label for="name" :value="__('Full Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" required autofocus />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        {{-- Phone Number --}}
         <div class="mt-4">
             <x-input-label for="phone_number" :value="__('Phone Number')" />
             <x-text-input id="phone_number" class="block mt-1 w-full" type="text" name="phone_number" pattern="[0-9]{11}" maxlength="11" required />
             <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
         </div>
 
-        {{-- Email --}}
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" required />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        {{-- Role --}}
         <div class="mt-4">
             <x-input-label for="role" :value="__('Register As')" />
             <select id="role" name="role" class="block mt-1 w-full" onchange="showRoleFields()" required>
@@ -35,14 +30,12 @@
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
-        {{-- Admin Access Code --}}
         <div class="mt-4 hidden" id="admin_fields">
             <x-input-label for="access_code" :value="__('Admin Access Code')" />
             <x-text-input id="access_code" class="block mt-1 w-full" type="text" name="access_code" />
             <x-input-error :messages="$errors->get('access_code')" class="mt-2" />
         </div>
 
-        {{-- Driver Fields --}}
         <div class="mt-4 hidden" id="driver_fields">
             <div>
                 <x-input-label for="license_number" :value="__('License Number')" />
@@ -61,14 +54,12 @@
             </div>
         </div>
 
-        {{-- Password --}}
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        {{-- Confirm Password --}}
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
             <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
