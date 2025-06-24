@@ -13,4 +13,4 @@ class DriverProfile extends Model
         'availability_status',
         'rating',
     ];
-} 
+}
