@@ -23,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/driver', 'admin.driver.index')->name('driver.index');
         Route::view('/vehicle', 'admin.vehicle.index')->name('vehicle.index');
         Route::view('/job', 'admin.job.index')->name('job.index');
-        Route::view('/location', 'admin.location.index')->name('location.index');
+         Route::view('/location', 'admin.location.index')->name('location.index');
     });
 });
 
