@@ -8,6 +8,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('admin.driver.index') }}"
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('admin.driver.index') ? 'font-bold underline' : '' }}">
+               Drivers Profile
+            </a>
+        </li>
+        <li>
             <a href="{{ route('admin.vehicle.index') }}"
                class="block hover:text-[#FCEF91] {{ request()->routeIs('admin.vehicle.index') ? 'font-bold underline' : '' }}">
                Vehicles
