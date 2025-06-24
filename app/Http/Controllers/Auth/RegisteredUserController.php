@@ -27,28 +27,39 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'max:20'],
-            'role' => ['required', 'in:admin,driver,dispatcher'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+public function store(Request $request): RedirectResponse
+{
+    $request->validate([
+    'name' => ['required', 'string', 'max:255'],
+    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    'phone_number' => ['required', 'digits:11'],
+    'role' => ['required', 'string'],
+    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'role' => $request->role,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+// Check for admin access code
+if ($request->role === 'Admin') {
+    $request->validate([
+        'access_code' => ['required', 'string'],
+    ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+    if ($request->access_code !== env('ADMIN_ACCESS_CODE')) {
+        return back()->withErrors(['access_code' => 'Invalid admin access code'])->withInput();
     }
+}
+
+$user = User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'phone_number' => $request->phone_number,
+    'role' => $request->role,
+    'password' => Hash::make($request->password),
+]);
+
+    event(new Registered($user));
+
+    Auth::login($user);
+
+    return redirect(route('dashboard', absolute: false));
+}
 }
