@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
-use App\Models\DriverProfile; // Assuming you're using this model for driver list
+use App\Models\DriverProfile;
+use Illuminate\Support\Facades\Auth;
+ // Assuming you're using this model for driver list
 
 class VehicleController extends Controller
 {
@@ -17,10 +19,16 @@ class VehicleController extends Controller
 
     // Show the form to register a new vehicle
     public function create()
-    {
-        $drivers = DriverProfile::all(); // for driver_id dropdown
-        return view('admin.vehicle.vehicleregister');
+{
+    $user = Auth::user();
+    $driver = DriverProfile::where('user_id', $user->id)->first();
+
+    if (!$driver) {
+        return redirect()->back()->with('error', 'Driver profile not found.');
     }
+
+    return view('admin.vehicle.vehicleregister', ['driverId' => $driver->id]);
+}
 
     // Handle vehicle form submission
     public function store(Request $request)
