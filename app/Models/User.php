@@ -47,4 +47,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function driverProfile()
+    {
+        return $this->hasOne(DriverProfile::class);
+    }
+
 }
