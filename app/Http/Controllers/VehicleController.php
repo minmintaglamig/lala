@@ -12,10 +12,22 @@ class VehicleController extends Controller
 {
     // Show the list of all vehicles
     public function index()
-    {
-        $vehicles = Vehicle::all();
-        return view('admin.vehicle.index', compact('vehicles'));
+{
+    // Get the logged-in user
+    $user = Auth::user();
+
+    // Find the driver's profile associated with the logged-in user
+    $driver = \App\Models\DriverProfile::where('user_id', $user->id)->first();
+
+    if (!$driver) {
+        return redirect()->back()->with('error', 'Driver profile not found.');
     }
+
+    // Fetch only the vehicles belonging to that driver
+    $vehicles = \App\Models\Vehicle::where('driver_id', $driver->id)->get();
+
+    return view('admin.vehicle.index', compact('vehicles'));
+}
 
     // Show the form to register a new vehicle
     public function create()
