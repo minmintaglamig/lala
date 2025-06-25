@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\DriverController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\JobController;
-use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VehicleController;
@@ -24,10 +21,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/client/dashboard', 'client.dashboard')->name('client.dashboard');
 
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
+        Route::view('/driver', 'admin.driver.index')->name('driver.index');
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
-        Route::get('/job', [JobController::class, 'index'])->name('job.index');
-        Route::get('/location', [LocationController::class, 'index'])->name('location.index');
+        Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
+        Route::view('/job', 'admin.job.index')->name('job.index');
+         Route::view('/location', 'admin.location.index')->name('location.index');
     });
 });
 

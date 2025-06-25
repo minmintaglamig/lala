@@ -19,7 +19,7 @@ class VehicleController extends Controller
 
     // Show the form to register a new vehicle
     public function create()
-{
+    {
     $user = Auth::user();
     $driver = DriverProfile::where('user_id', $user->id)->first();
 
@@ -28,7 +28,8 @@ class VehicleController extends Controller
     }
 
     return view('admin.vehicle.vehicleregister', ['driverId' => $driver->id]);
-}
+    }
+
 
     // Handle vehicle form submission
     public function store(Request $request)
@@ -43,7 +44,6 @@ class VehicleController extends Controller
         ]);
 
         Vehicle::create($request->all());
-
         return redirect()->route('vehicles.index')->with('success', 'Vehicle registered successfully!');
     }
 }
