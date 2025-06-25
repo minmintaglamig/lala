@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Vehicle extends Model
+class ClientProfile extends Model
 {
     protected $fillable = [
-        'id', 'driver_id', 'plate_number', 'type', 'model', 'capacity', 'status'
+        'user_id',
+        'address',
     ];
 }

@@ -22,7 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/driver', 'admin.driver.index')->name('driver.index');
-        Route::view('/vehicle', 'admin.vehicle.index')->name('vehicle.index');
+        Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
+        Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
         Route::view('/job', 'admin.job.index')->name('job.index');
          Route::view('/location', 'admin.location.index')->name('location.index');
     });
