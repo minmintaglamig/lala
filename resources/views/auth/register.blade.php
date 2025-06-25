@@ -49,6 +49,12 @@
             </div>
         </div>
 
+        <div class="mt-4 hidden" id="client_fields">
+            <x-input-label for="client_address" :value="__('Address')" />
+            <x-text-input id="client_address" class="block mt-1 w-full" type="text" name="client_address" />
+            <x-input-error :messages="$errors->get('client_address')" class="mt-2" />
+        </div>
+
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
@@ -73,13 +79,15 @@
     </form>
 
     <script>
-        function showRoleFields() {
-            const role = document.getElementById('role').value;
-            document.getElementById('admin_fields').classList.add('hidden');
-            document.getElementById('driver_fields').classList.add('hidden');
+    function showRoleFields() {
+        const role = document.getElementById('role').value;
+        document.getElementById('admin_fields').classList.add('hidden');
+        document.getElementById('driver_fields').classList.add('hidden');
+        document.getElementById('client_fields').classList.add('hidden');
 
-            if (role === 'Admin') document.getElementById('admin_fields').classList.remove('hidden');
-            if (role === 'Driver') document.getElementById('driver_fields').classList.remove('hidden');
-        }
-    </script>
+        if (role === 'Admin') document.getElementById('admin_fields').classList.remove('hidden');
+        if (role === 'Driver') document.getElementById('driver_fields').classList.remove('hidden');
+        if (role === 'Client') document.getElementById('client_fields').classList.remove('hidden');
+    }
+</script>
 </x-guest-layout>

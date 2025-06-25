@@ -12,12 +12,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\DriverProfile;
+use App\Models\ClientProfile;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
@@ -68,6 +66,17 @@ public function store(Request $request): RedirectResponse
             'address' => $request->address,
             'availability_status' => 'available',
             'rating' => null,
+        ]);
+    }
+
+    if ($request->role === 'Client') {
+        $request->validate([
+            'client_address' => ['required', 'string'],
+        ]);
+
+        ClientProfile::create([
+            'user_id' => $user->id,
+            'address' => $request->client_address,
         ]);
     }
 
