@@ -9,8 +9,10 @@ return new class extends Migration {
     {
         Schema::create('delivery_jobs', function (Blueprint $table) {
             $table->id();
+            $table->string('client_id')->nullable();
             $table->foreignId('driver_id')->nullable()->constrained('driver_profiles')->onDelete('set null');
             $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
+            $table->string('vehicle_type')->nullable();
             $table->string('pickup_address');
             $table->string('dropoff_address');
             $table->text('package_description');
@@ -18,7 +20,8 @@ return new class extends Migration {
             $table->enum('delivery_status', ['pending', 'in_progress', 'delivered', 'cancelled'])->default('pending');
             $table->string('client_name');
             $table->string('client_contact');
-            $table->float('price');
+            $table->float('distance')->nullable();
+            $table->float('price')->nullable();
             $table->timestamps();
         });
     }

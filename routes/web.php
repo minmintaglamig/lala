@@ -7,6 +7,7 @@ use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ClientController;
 
 Route::get('/', fn () => view('index'));
 
@@ -36,6 +37,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //DRIVER ROUTES
         Route::get('/driver/show/{id}', [DriverController::class, 'show'])->name('driver.show');
     });
+});
+
+Route::prefix('client')->name('client.')->group(function () {
+    Route::get('/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
+    Route::get('/book', [ClientController::class, 'book'])->name('book');
+    Route::post('/book', [ClientController::class, 'storeBooking'])->name('book.store');
 });
 
 Route::middleware('auth')->group(function () {
