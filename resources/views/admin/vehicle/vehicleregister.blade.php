@@ -1,8 +1,9 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('vehicles.store') }}">
+    <form method="POST" action="{{ route('admin.vehicle.store') }}">
         @csrf
 
-        <input type="hidden" name="driver_id" value="{{ $driverId }}">
+        <label for="driver_id">DRIVER ID</label>
+        <input name="driver_id" value="{{ $driver_id }}">
 
         <!-- Plate Number -->
         <div class="mt-4">
@@ -44,8 +45,10 @@
                 required>
                 <option value="" disabled selected>Select status</option>
                 <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available</option>
-                <option value="maintenance" {{ old('status') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
-                <option value="unavailable" {{ old('status') == 'unavailable' ? 'selected' : '' }}>Unavailable</option>
+                <option value="maintenance" {{ old('status') == 'maintenance' ? 'selected' : '' }}>Maintenance
+                </option>
+                <option value="unavailable" {{ old('status') == 'unavailable' ? 'selected' : '' }}>Unavailable
+                </option>
             </select>
             <x-input-error :messages="$errors->get('status')" class="mt-2" />
         </div>

@@ -25,9 +25,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
-        Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/job', [JobController::class, 'index'])->name('job.index');
         Route::get('/location', [LocationController::class, 'index'])->name('location.index');
+
+        //VEHICLE ROUTES
+        Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
+        Route::get('/vehicle/register/{id}', [VehicleController::class, 'create'])->name('vehicle.create');
+        Route::post('/vehicle/register', [VehicleController::class, 'store'])->name('vehicle.store');
+
+        //DRIVER ROUTES
+        Route::get('/driver/show/{id}', [DriverController::class, 'show'])->name('driver.show');
     });
 });
 

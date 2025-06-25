@@ -10,13 +10,18 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('driver_id')->constrained('driver_profiles')->onDelete('cascade');
+            $table->unsignedBigInteger('driver_id')->unique();
             $table->string('plate_number')->unique();
             $table->string('type');
             $table->string('model');
             $table->integer('capacity');
-            $table->enum('status', ['active', 'maintenance']);
+            $table->enum('status', ['available', 'maintenance', 'unavailable'])->default('available');
             $table->timestamps();
+
+            $table->foreign('driver_id')
+          ->references('user_id')
+          ->on('driver_profiles')
+          ->onDelete('cascade');
         });
     }
 
