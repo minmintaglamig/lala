@@ -7,10 +7,7 @@
         <!-- Plate Number -->
         <div class="mt-4">
             <x-input-label for="plate_number" :value="__('Plate Number')" />
-            <x-text-input id="plate_number" class="block mt-1 w-full"
-                type="text"
-                name="plate_number"
-                :value="old('plate_number')"
+            <x-text-input id="plate_number" class="block mt-1 w-full" type="text" name="plate_number" :value="old('plate_number')"
                 required autofocus autocomplete="off" />
             <x-input-error :messages="$errors->get('plate_number')" class="mt-2" />
         </div>
@@ -18,10 +15,7 @@
         <!-- Type -->
         <div class="mt-4">
             <x-input-label for="type" :value="__('Vehicle Type')" />
-            <x-text-input id="type" class="block mt-1 w-full"
-                type="text"
-                name="type"
-                :value="old('type')"
+            <x-text-input id="type" class="block mt-1 w-full" type="text" name="type" :value="old('type')"
                 required />
             <x-input-error :messages="$errors->get('type')" class="mt-2" />
         </div>
@@ -29,10 +23,7 @@
         <!-- Model -->
         <div class="mt-4">
             <x-input-label for="model" :value="__('Model')" />
-            <x-text-input id="model" class="block mt-1 w-full"
-                type="text"
-                name="model"
-                :value="old('model')"
+            <x-text-input id="model" class="block mt-1 w-full" type="text" name="model" :value="old('model')"
                 required autocomplete="off" />
             <x-input-error :messages="$errors->get('model')" class="mt-2" />
         </div>
@@ -40,10 +31,7 @@
         <!-- Capacity -->
         <div class="mt-4">
             <x-input-label for="capacity" :value="__('Capacity')" />
-            <x-text-input id="capacity" class="block mt-1 w-full"
-                type="number"
-                name="capacity"
-                :value="old('capacity')"
+            <x-text-input id="capacity" class="block mt-1 w-full" type="number" name="capacity" :value="old('capacity')"
                 required />
             <x-input-error :messages="$errors->get('capacity')" class="mt-2" />
         </div>
