@@ -63,7 +63,8 @@ public function index()
         ]);
 
         Vehicle::create($request->all());
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle registered successfully!');
+        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle registered successfully!');
+
     }
 
     public function edit($id)
@@ -85,14 +86,13 @@ public function index()
     $vehicle = Vehicle::findOrFail($id);
     $vehicle->update($request->all());
 
-    return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
+    return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
 }
     public function destroy($id)
 {
     $vehicle = Vehicle::findOrFail($id);
     $vehicle->delete();
 
-    return redirect()->route('vehicles.index')->with('success', 'Vehicle deleted successfully.');
+    return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle deleted successfully.');
 }
 }
-

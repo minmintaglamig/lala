@@ -1,5 +1,8 @@
-<x-app-layout>
-    @section('content')
+@extends('layouts.admin')
+
+@section('title', 'DriverProfile')
+
+@section('content')
 
     <div class="container p-4 bg-white rounded shadow">
         <h2 class="mb-4">Driver Personal Information</h2>
@@ -111,5 +114,4 @@
         });
     </script>
 
-    @endsection
-</x-app-layout>
+@endsection

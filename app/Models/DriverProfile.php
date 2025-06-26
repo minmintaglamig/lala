@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DriverProfile extends Model
 {
     protected $fillable = [
+        'user_id',
         'driver_id',
         'last_name',
         'first_name',
@@ -29,5 +30,6 @@ class DriverProfile extends Model
         'route_assigned',
         'medical_cert_file',
         'drug_test_file'
+        
     ];
 }

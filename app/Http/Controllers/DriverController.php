@@ -9,13 +9,11 @@ use Carbon\Carbon;
 
 class DriverController extends Controller
 {
-    // Show personal info form
     public function createdriverinfo()
     {
-        return view('driver.driverinfo');
+        return view('admin.driver.driverinfo');
     }
 
-    // List and filter drivers
     public function index(Request $request)
     {
         $query = DriverProfile::query();
@@ -33,24 +31,21 @@ class DriverController extends Controller
 
         $driver = $query->get();
 
-        return view('driver.index', compact('driver'));
+        return view('admin.driver.index', compact('driver'));
     }
 
-    // Show edit form (optional)
     public function edit($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('driver.drivermoreinfo', compact('driver'));
+        return view('admin.driver.drivermoreinfo', compact('driver'));
     }
 
-    // Show view modal (optional)
     public function view($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('driver.view', compact('driver'));
+        return view('admin.driver.view', compact('driver'));
     }
 
-    // Step 1: Store personal info and redirect
     public function storedriverinfo(Request $request)
     {
         $validated = $request->validate([
@@ -67,29 +62,24 @@ class DriverController extends Controller
             'emergency_contact' => 'nullable|string',
         ]);
 
-        // Calculate age
         if (!empty($validated['date_of_birth'])) {
             $dob = Carbon::parse($validated['date_of_birth']);
             $validated['age'] = $dob->age;
         }
 
-        // Generate custom driver_id
         $validated['driver_id'] = 'DRV-' . strtoupper(Str::random(6));
 
-        // Save
         $driver = DriverProfile::create($validated);
 
-        return redirect()->route('driver.drivermoreinfo', $driver->id);
+        return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
     }
 
-    // Step 2: Show more info form
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('driver.drivermoreinfo', compact('driver'));
+        return view('admin.driver.drivermoreinfo', compact('driver'));
     }
 
-    // Step 2: Store more info
     public function storeMoreInfo(Request $request, $id)
     {
         $driver = DriverProfile::findOrFail($id);
@@ -108,7 +98,6 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Handle file uploads
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
@@ -123,6 +112,6 @@ class DriverController extends Controller
 
         $driver->update($validated);
 
-        return redirect()->route('drivers.index')->with('success', 'Driver Info Updated!');
+        return redirect()->route('admin.driver.index')->with('success', 'Driver Info Updated!');
     }
 }
