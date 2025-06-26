@@ -4,7 +4,7 @@
     <div class="container p-4 bg-white rounded shadow">
         <h2 class="mb-4">Driver Personal Information</h2>
 
-        <form action="{{ route('drivers.store.driverinfo') }}" method="POST">
+        <form action="{{ route('driver.store.driverinfo') }}" method="POST">
             @csrf
             <div class="row">
 

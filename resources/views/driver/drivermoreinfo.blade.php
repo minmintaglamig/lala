@@ -16,7 +16,7 @@
         </div>
         @endif
 
-        <form action="{{ route('drivers.store.drivermoreinfo', $driver->driver_id) }}" method="POST"
+        <form action="{{ route('driver.store.drivermoreinfo', $driver->driver_id) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
 

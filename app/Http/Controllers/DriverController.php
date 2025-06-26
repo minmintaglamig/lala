@@ -12,7 +12,7 @@ class DriverController extends Controller
     // Show personal info form
     public function createdriverinfo()
     {
-        return view('drivers.driverinfo');
+        return view('driver.driverinfo');
     }
 
     // List and filter drivers
@@ -33,21 +33,21 @@ class DriverController extends Controller
 
         $drivers = $query->get();
 
-        return view('drivers.index', compact('drivers'));
+        return view('driver.index', compact('driver'));
     }
 
     // Show edit form (optional)
     public function edit($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('drivers.drivermoreinfo', compact('driver'));
+        return view('driver.drivermoreinfo', compact('driver'));
     }
 
     // Show view modal (optional)
     public function view($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('drivers.view', compact('driver'));
+        return view('driver.view', compact('driver'));
     }
 
     // Step 1: Store personal info and redirect
@@ -79,14 +79,14 @@ class DriverController extends Controller
         // Save
         $driver = DriverProfile::create($validated);
 
-        return redirect()->route('drivers.drivermoreinfo', $driver->id);
+        return redirect()->route('driver.drivermoreinfo', $driver->id);
     }
 
     // Step 2: Show more info form
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('drivers.drivermoreinfo', compact('driver'));
+        return view('driver.drivermoreinfo', compact('driver'));
     }
 
     // Step 2: Store more info
