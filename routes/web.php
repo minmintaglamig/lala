@@ -30,17 +30,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/job', 'admin.job.index')->name('job.index');
         Route::view('/location', 'admin.location.index')->name('location.index');
         // Step 1: Create & Store Driver Personal Info
-        Route::get('/drivers/create-driverinfo', [DriverController::class, 'createdriverinfo'])->name('drivers.create.driverinfo');
-        Route::post('/drivers/store-driverinfo', [DriverController::class, 'storedriverinfo'])->name('drivers.store.driverinfo');
+        Route::get('/driver/create-driverinfo', [DriverController::class, 'createdriverinfo'])->name('driver.create.driverinfo');
+        Route::post('/driver/store-driverinfo', [DriverController::class, 'storedriverinfo'])->name('driver.store.driverinfo');
 
         // Step 2: Create & Store Driver License/Work/Health Info
-        Route::get('/drivers/create-drivermoreinfo/{id}', [DriverController::class, 'createdrivermoreinfo'])->name('drivers.create.drivermoreinfo');
-        Route::post('/drivers/store-drivermoreinfo/{id}', [DriverController::class, 'storeMoreInfo'])->name('drivers.store.drivermoreinfo');
+        Route::get('/driver/create-drivermoreinfo/{id}', [DriverController::class, 'createdrivermoreinfo'])->name('driver.create.drivermoreinfo');
+        Route::post('/driver/store-drivermoreinfo/{id}', [DriverController::class, 'storeMoreInfo'])->name('driver.store.drivermoreinfo');
 
         // Driver List, Edit, View
-        Route::get('/drivers', [DriverController::class, 'index'])->name('drivers.index');
-        Route::get('/drivers/{id}/edit', [DriverController::class, 'edit'])->name('drivers.edit');
-        Route::get('/drivers/{id}/view', [DriverController::class, 'view'])->name('drivers.view');
+        Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
+        Route::get('/driver/{id}/edit', [DriverController::class, 'edit'])->name('driver.edit');
+        Route::get('/dr/{id}/view', [DriverController::class, 'view'])->name('driver.view');
     });
 });
 
