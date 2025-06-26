@@ -24,6 +24,7 @@ return array(
     'App\\Http\\Requests\\Auth\\LoginRequest' => $baseDir . '/app/Http/Requests/Auth/LoginRequest.php',
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',
     'App\\Mail\\VerifyEmail' => $baseDir . '/app/Mail/VerifyEmail.php',
+    'App\\Models\\ClientProfile' => $baseDir . '/app/Models/ClientProfile.php',
     'App\\Models\\DriverProfile' => $baseDir . '/app/Models/DriverProfile.php',
     'App\\Models\\Job' => $baseDir . '/app/Models/Job.php',
     'App\\Models\\LocationUpdate' => $baseDir . '/app/Models/LocationUpdate.php',

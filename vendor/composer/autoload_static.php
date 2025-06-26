@@ -539,6 +539,7 @@ class ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
         'App\\Mail\\VerifyEmail' => __DIR__ . '/../..' . '/app/Mail/VerifyEmail.php',
+        'App\\Models\\ClientProfile' => __DIR__ . '/../..' . '/app/Models/ClientProfile.php',
         'App\\Models\\DriverProfile' => __DIR__ . '/../..' . '/app/Models/DriverProfile.php',
         'App\\Models\\Job' => __DIR__ . '/../..' . '/app/Models/Job.php',
         'App\\Models\\LocationUpdate' => __DIR__ . '/../..' . '/app/Models/LocationUpdate.php',
