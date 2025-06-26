@@ -4,14 +4,17 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DriverController;
 
-Route::get('/', fn () => view('index'));
+Route::get('/', fn() => view('index'));
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
 
-    if ($user->role === 'Admin') return redirect('/admin/dashboard');
-    if ($user->role === 'Driver') return redirect('/driver/dashboard');
+    if ($user->role === 'Admin')
+        return redirect('/admin/dashboard');
+    if ($user->role === 'Driver')
+        return redirect('/driver/dashboard');
     return redirect('/client/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -25,7 +28,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
         Route::view('/job', 'admin.job.index')->name('job.index');
-         Route::view('/location', 'admin.location.index')->name('location.index');
+        Route::view('/location', 'admin.location.index')->name('location.index');
+        // Step 1: Create & Store Driver Personal Info
+        Route::get('/drivers/create-driverinfo', [DriverController::class, 'createdriverinfo'])->name('drivers.create.driverinfo');
+        Route::post('/drivers/store-driverinfo', [DriverController::class, 'storedriverinfo'])->name('drivers.store.driverinfo');
+
+        // Step 2: Create & Store Driver License/Work/Health Info
+        Route::get('/drivers/create-drivermoreinfo/{id}', [DriverController::class, 'createdrivermoreinfo'])->name('drivers.create.drivermoreinfo');
+        Route::post('/drivers/store-drivermoreinfo/{id}', [DriverController::class, 'storeMoreInfo'])->name('drivers.store.drivermoreinfo');
+
+        // Driver List, Edit, View
+        Route::get('/drivers', [DriverController::class, 'index'])->name('drivers.index');
+        Route::get('/drivers/{id}/edit', [DriverController::class, 'edit'])->name('drivers.edit');
+        Route::get('/drivers/{id}/view', [DriverController::class, 'view'])->name('drivers.view');
     });
 });
 
@@ -35,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::resource('vehicles', VehicleController::class);
 
