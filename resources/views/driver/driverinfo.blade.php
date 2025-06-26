@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html>
+<x-app-layout>
+    @section('content')
 
-<head>
-    <title>Driver Personal Info</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body class="p-5 bg-light">
     <div class="container p-4 bg-white rounded shadow">
-        <h2 class="mb-4">Step 1: Driver Personal Information</h2>
+        <h2 class="mb-4">Driver Personal Information</h2>
 
         <form action="{{ route('drivers.store.driverinfo') }}" method="POST">
             @csrf
@@ -27,9 +21,13 @@
                 ] as $field => $label)
                 <div class="mb-3 col-md-6">
                     <label>{{ $label }}</label>
-                    <input type="{{ $field === 'email' ? 'email' : 'text' }}" name="{{ $field }}" class="form-control"
-                        value="{{ old($field) }}" {{ in_array($field,
-                        ['last_name','first_name','middle_name','contact_number']) ? 'required' : '' }}>
+                    <input type="{{ $field === 'email' ? 'email' : 'text' }}" name="{{ $field }}"
+                        class="form-control @error($field) is-invalid @enderror" value="{{ old($field) }}" {{
+                        in_array($field, ['last_name','first_name','middle_name','contact_number']) ? 'required' : ''
+                        }}>
+                    @error($field)
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 @endforeach
 
@@ -77,7 +75,7 @@
         </form>
     </div>
 
-    {{-- Script for Auto Age Calculation --}}
+    {{-- Auto-calculate age --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const dobInput = document.getElementById('dob');
@@ -101,17 +99,17 @@
                 ageInput.value = age;
             }
 
-            // Fill on load (for old values)
+            // Load old value if available
             if (dobInput.value) {
                 calculateAge(dobInput.value);
             }
 
-            // Update on change
+            // Recalculate on change
             dobInput.addEventListener('change', function () {
                 calculateAge(this.value);
             });
         });
     </script>
-</body>
 
-</html>
+    @endsection
+</x-app-layout>
