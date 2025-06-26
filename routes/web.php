@@ -40,3 +40,5 @@ require __DIR__.'/auth.php';
 Route::resource('vehicles', VehicleController::class);
 
 
+
+
