@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="container p-4 mt-5 bg-white rounded shadow">
-        <h2 class="mb-4">Step 2: Driver Additional Information</h2>
+        <h2 class="mb-4">Driver Additional Information</h2>
 
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

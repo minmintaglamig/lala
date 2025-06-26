@@ -31,7 +31,7 @@ class DriverController extends Controller
             });
         }
 
-        $drivers = $query->get();
+        $driver = $query->get();
 
         return view('driver.index', compact('driver'));
     }
