@@ -214,10 +214,7 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getBytes(): string
     {
-        /**
-         * @var non-empty-string
-         * @phpstan-ignore possiblyImpure.functionCall, possiblyImpure.functionCall
-         */
+        /** @var non-empty-string */
         return (string) hex2bin(str_replace('-', '', $this->uuid));
     }
 

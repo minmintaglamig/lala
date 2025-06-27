@@ -29,20 +29,16 @@ use function uuid_parse;
  */
 class PeclUuidNameGenerator implements NameGeneratorInterface
 {
-    /**
-     * @pure
-     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         $uuid = match ($hashAlgorithm) {
-            'md5' => uuid_generate_md5($ns->toString(), $name), /** @phpstan-ignore possiblyImpure.functionCall */
-            'sha1' => uuid_generate_sha1($ns->toString(), $name), /** @phpstan-ignore possiblyImpure.functionCall */
+            'md5' => uuid_generate_md5($ns->toString(), $name),
+            'sha1' => uuid_generate_sha1($ns->toString(), $name),
             default => throw new NameException(
                 sprintf('Unable to hash namespace and name with algorithm \'%s\'', $hashAlgorithm),
             ),
         };
 
-        /** @phpstan-ignore possiblyImpure.functionCall */
         return (string) uuid_parse($uuid);
     }
 }

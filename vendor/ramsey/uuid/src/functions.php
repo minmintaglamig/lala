@@ -62,8 +62,6 @@ function v2(
  * @param UuidInterface | string $ns The namespace (must be a valid UUID)
  *
  * @return non-empty-string Version 3 UUID as a string
- *
- * @pure
  */
 function v3($ns, string $name): string
 {
@@ -86,8 +84,6 @@ function v4(): string
  * @param UuidInterface | string $ns The namespace (must be a valid UUID)
  *
  * @return non-empty-string Version 5 UUID as a string
- *
- * @pure
  */
 function v5($ns, string $name): string
 {
@@ -132,8 +128,6 @@ function v7(?DateTimeInterface $dateTime = null): string
  *     65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application needs.
  *
  * @return non-empty-string Version 8 UUID as a string
- *
- * @pure
  */
 function v8(string $bytes): string
 {

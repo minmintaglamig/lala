@@ -23,15 +23,11 @@ trait MaxTrait
 {
     /**
      * Returns the bytes that comprise the fields
-     *
-     * @pure
      */
     abstract public function getBytes(): string;
 
     /**
      * Returns true if the byte string represents a max UUID
-     *
-     * @pure
      */
     public function isMax(): bool
     {

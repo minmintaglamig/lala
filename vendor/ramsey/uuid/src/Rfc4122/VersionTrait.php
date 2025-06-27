@@ -41,8 +41,6 @@ trait VersionTrait
      * meaningful for this variant.
      *
      * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
-     *
-     * @pure
      */
     abstract public function getVersion(): ?int;
 

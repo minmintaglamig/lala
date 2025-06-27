@@ -19,7 +19,6 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 
-use function assert;
 use function hash;
 use function pack;
 use function str_pad;
@@ -82,8 +81,7 @@ class UnixTimeGenerator implements TimeGeneratorInterface
             $time = str_pad(BigInteger::of($time)->toBytes(false), 6, "\x00", STR_PAD_LEFT);
         }
 
-        assert(strlen($time) === 6);
-
+        /** @var non-empty-string */
         return $time . pack('n*', self::$rand[1], self::$rand[2], self::$rand[3], self::$rand[4], self::$rand[5]);
     }
 

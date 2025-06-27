@@ -30,8 +30,6 @@ interface NameGeneratorInterface
      * @param string $hashAlgorithm The hashing algorithm to use
      *
      * @return string A binary string
-     *
-     * @pure
      */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string;
 }

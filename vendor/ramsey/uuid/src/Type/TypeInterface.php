@@ -24,13 +24,7 @@ use Serializable;
  */
 interface TypeInterface extends JsonSerializable, Serializable
 {
-    /**
-     * @pure
-     */
     public function toString(): string;
 
-    /**
-     * @pure
-     */
     public function __toString(): string;
 }
