@@ -1,3 +1,9 @@
-<x-app-layout>
-    <div class="p-6">Welcome to Driver Dashboard!</div>
-</x-app-layout>
+@extends('layouts.driver')
+
+@section('title', 'Dashboard')
+
+@section('content')
+<div class="text-3xl font-bold text-[#EA2F14]">
+    Welcome, {{ Auth::user()->name }} ({{ Auth::user()->role }})
+</div>
+@endsection

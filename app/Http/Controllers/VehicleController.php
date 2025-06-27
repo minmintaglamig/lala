@@ -10,24 +10,31 @@ use Illuminate\Support\Facades\Auth;
 
 class VehicleController extends Controller
 {
-    // Show the list of all vehicles
-    public function index()
+
+
+public function index()
 {
     // Get the logged-in user
     $user = Auth::user();
 
-    // Find the driver's profile associated with the logged-in user
-    $driver = \App\Models\DriverProfile::where('user_id', $user->id)->first();
+    // If the user is an admin, show all vehicles
+    if ($user->role === 'admin') {
+        $vehicles = Vehicle::all();
+    } else {
+        // For non-admin users, find their driver profile
+        $driver = DriverProfile::where('user_id', $user->id)->first();
 
-    if (!$driver) {
-        return redirect()->back()->with('error', 'Driver profile not found.');
+        if (!$driver) {
+            return redirect()->back()->with('error', 'Driver profile not found.');
+        }
+
+        // Fetch only the vehicles belonging to that driver
+        $vehicles = Vehicle::where('driver_id', $driver->id)->get();
     }
-
-    // Fetch only the vehicles belonging to that driver
-    $vehicles = \App\Models\Vehicle::where('driver_id', $driver->id)->get();
 
     return view('admin.vehicle.index', compact('vehicles'));
 }
+
 
     // Show the form to register a new vehicle
     public function create()
@@ -56,6 +63,36 @@ class VehicleController extends Controller
         ]);
 
         Vehicle::create($request->all());
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle registered successfully!');
+        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle registered successfully!');
+
     }
+
+    public function edit($id)
+    {
+    $vehicle = Vehicle::findOrFail($id);
+    return view('admin.vehicle.edit', compact('vehicle'));
+    }
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'plate_number' => 'required|string',
+        'type' => 'required|string',
+        'model' => 'required|string',
+        'capacity' => 'required|numeric',
+        'status' => 'required|string',
+    ]);
+
+    $vehicle = Vehicle::findOrFail($id);
+    $vehicle->update($request->all());
+
+    return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
+}
+    public function destroy($id)
+{
+    $vehicle = Vehicle::findOrFail($id);
+    $vehicle->delete();
+
+    return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle deleted successfully.');
+}
 }

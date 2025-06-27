@@ -9,9 +9,13 @@ return new class extends Migration {
     {
         Schema::create('driver_profiles', function (Blueprint $table) {
             $table->id();
+
+            // Foreign Keys
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // Personal Information
             $table->string('driver_id')->nullable();
-            $table->string('name')->nullable();
+            $table->string('name')->nullable(); // Allow name to be skipped
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
@@ -21,21 +25,20 @@ return new class extends Migration {
             $table->string('marital_status')->nullable();
             $table->string('emergency_contact')->nullable();
 
-
-            // License
+            // License Information
             $table->string('license_number')->nullable();
             $table->date('license_expiry')->nullable();
             $table->string('license_type')->nullable();
             $table->string('additional_permits')->nullable();
             $table->string('license_image')->nullable();
 
-            // Work
+            // Work Information
             $table->string('driver_status')->nullable();
             $table->date('hire_date')->nullable();
             $table->string('vehicle_assigned')->nullable();
             $table->string('route_assigned')->nullable();
 
-            // Health
+            // Health & Safety
             $table->string('medical_cert_file')->nullable();
             $table->string('drug_test_file')->nullable();
 
@@ -48,4 +51,3 @@ return new class extends Migration {
         Schema::dropIfExists('driver_profiles');
     }
 };
-// This migration creates the driver_profiles table with various fields for personal, license, work, and health information.

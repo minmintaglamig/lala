@@ -7,12 +7,6 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-white" />
                     </a>
                 </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-[#FCEF91]">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
             </div>
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
