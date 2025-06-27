@@ -27,8 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //kay driver profiles
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
         Route::get('/driver/create', [DriverController::class, 'create'])->name('driver.create');
-        Route::get('/driver/profile/edit/{user}', [DriverController::class, 'edit'])->name('driver.profile.edit');
-        Route::post('/driver/profile/update/{user}', [DriverController::class, 'update'])->name('driver.profile.update');
+        Route::post('/driver/store', [DriverController::class, 'store'])->name('driver.store');
 
         // kay vehicles
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
