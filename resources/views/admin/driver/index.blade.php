@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($driver as $drivers)
+            @foreach($drivers)
             <tr>
                 <td>{{ $driver->name }}</td>
                 <td>{{ $driver->phone_number }}</td>

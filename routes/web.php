@@ -11,12 +11,19 @@ Route::get('/', fn() => view('index'));
 Route::get('/dashboard', function () {
     $user = Auth::user();
 
-    if ($user->role === 'Admin')
-        return redirect('/admin/dashboard');
-    if ($user->role === 'Driver')
-        return redirect('/driver/dashboard');
-    return redirect('/client/dashboard');
+    $role = strtolower(trim($user->role)); // Clean and lower the role
+
+    if ($role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif ($role === 'driver') {
+        return redirect()->route('driver.dashboard');
+    } elseif ($role === 'client') {
+        return redirect()->route('client.dashboard');
+    } else {
+        abort(403, 'Unauthorized role.');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
