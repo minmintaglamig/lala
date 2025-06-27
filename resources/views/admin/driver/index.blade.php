@@ -35,11 +35,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($drivers)
+            @foreach($drivers as $driver)
             <tr>
-                <td>{{ $driver->name }}</td>
-                <td>{{ $driver->phone_number }}</td>
-                <td>{{ $driver->license_number }}</td>
+                <td>{{ $driver->driver_id ?? 'N/A' }}</td>
+                <td>{{ $driver->name ?? 'N/A' }}</td>
+                <td>{{ $driver->phone_number ?? 'N/A' }}</td>
+                <td>{{ $driver->license_number ?? 'N/A' }}</td>
                 <td>
                     @if($driver->license_image)
                     <img src="{{ asset('storage/' . $driver->license_image) }}" width="100">

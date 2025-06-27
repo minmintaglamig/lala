@@ -31,19 +31,14 @@ class DriverController extends Controller
             'emergency_contact' => 'nullable|string',
         ]);
 
-        // Calculate age if date_of_birth is provided
         if (!empty($validated['date_of_birth'])) {
             $dob = Carbon::parse($validated['date_of_birth']);
             $validated['age'] = $dob->age;
         }
 
-        // Generate unique driver ID
         $validated['driver_id'] = 'DRV-' . strtoupper(Str::random(6));
-
-        // Attach creator/admin user ID
         $validated['created_by'] = Auth::id();
 
-        // Save driver profile
         $driver = DriverProfile::create($validated);
 
         return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
@@ -75,7 +70,6 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // File uploads
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
@@ -118,6 +112,7 @@ class DriverController extends Controller
         return view('admin.driver.index', compact('drivers'));
     }
 
+
     // Driver Self-Edit Profile (Driver Role)
     public function edit()
     {
@@ -153,7 +148,6 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // File uploads
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
