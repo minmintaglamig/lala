@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class LocationUpdate extends Model
 {
-    //
+    protected $fillable = ['delivery_job_id', 'latitude', 'longitude', 'timestamp'];
+
+    public function deliveryJob()
+    {
+        return $this->belongsTo(DeliveryJob::class);
+    }
 }

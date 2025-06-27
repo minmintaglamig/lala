@@ -9,8 +9,11 @@ class DriverProfile extends Model
     protected $fillable = [
         'user_id',
         'driver_id',
-        'name',
-        'phone_number',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'suffix',
+        'contact_number',
         'email',
         'address',
         'date_of_birth',
@@ -28,11 +31,5 @@ class DriverProfile extends Model
         'medical_cert_file',
         'drug_test_file'
 
-
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
 }
