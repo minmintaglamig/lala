@@ -26,8 +26,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         //kay driver profiles
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
-        Route::get('/driver/create', [DriverController::class, 'create'])->name('driver.create');
-        Route::post('/driver/store', [DriverController::class, 'store'])->name('driver.store');
+        Route::get('/driver/create', [DriverController::class, 'createdriverinfo'])->name('driver.create');
+        Route::post('/driver/store', [DriverController::class, 'storedriverinfo'])->name('driver.store');
+
+        // More Info Step
+        Route::get('/driver/{id}/moreinfo', [DriverController::class, 'createdrivermoreinfo'])->name('driver.drivermoreinfo');
+        Route::post('/driver/{id}/moreinfo', [DriverController::class, 'storeMoreInfo'])->name('driver.storemoreinfo');
+
+        // View Driver
+        Route::get('/driver/{id}/view', [DriverController::class, 'view'])->name('driver.view');
+
+        // Delete Driver
+        Route::delete('/driver/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
         // kay vehicles
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
