@@ -11,8 +11,10 @@ Route::get('/', fn() => view('index'));
 Route::get('/dashboard', function () {
     $user = Auth::user();
 
-    if ($user->role === 'Admin') return redirect('/admin/dashboard');
-    if ($user->role === 'Driver') return redirect('/driver/dashboard');
+    if ($user->role === 'Admin')
+        return redirect('/admin/dashboard');
+    if ($user->role === 'Driver')
+        return redirect('/driver/dashboard');
     return redirect('/client/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -25,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //kay driver profiles
         Route::get('/drivers', [DriverController::class, 'index'])->name('driver.index');
         Route::get('/drivers/create', [DriverController::class, 'create'])->name('driver.create');
+        Route::get('/driver/profile/edit/{user}', [DriverController::class, 'edit'])->name('driver.profile.edit');
+        Route::post('/driver/profile/update/{user}', [DriverController::class, 'update'])->name('driver.profile.update');
 
         // kay vehicles
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');

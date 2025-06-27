@@ -37,8 +37,8 @@
         <tbody>
             @foreach($driver as $drivers)
             <tr>
-                <td>{{ $driver->last_name }}, {{ $driver->first_name }}</td>
-                <td>{{ $driver->contact_number }}</td>
+                <td>{{ $driver->name }}</td>
+                <td>{{ $driver->phone_number }}</td>
                 <td>{{ $driver->license_number }}</td>
                 <td>
                     @if($driver->license_image)
@@ -81,9 +81,8 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6"><strong>Name:</strong> {{ $driver->last_name }}, {{
-                                    $driver->first_name }} {{ $driver->middle_name }} {{ $driver->suffix }}</div>
-                                <div class="col-md-6"><strong>Contact:</strong> {{ $driver->contact_number }}</div>
+                                <div class="col-md-6"><strong>Name:</strong> {{ $driver->name }}</div>
+                                <div class="col-md-6"><strong>Contact:</strong> {{ $driver->phone_number }}</div>
                                 <div class="col-md-6"><strong>Email:</strong> {{ $driver->email }}</div>
                                 <div class="col-md-6"><strong>Address:</strong> {{ $driver->address }}</div>
                                 <div class="col-md-6"><strong>DOB:</strong> {{ $driver->date_of_birth }}</div>

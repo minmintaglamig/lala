@@ -9,51 +9,18 @@ use Carbon\Carbon;
 
 class DriverController extends Controller
 {
+    // Step 1: Create Driver Info
     public function createdriverinfo()
     {
         return view('admin.driver.driverinfo');
     }
 
-    public function index(Request $request)
-    {
-        $query = DriverProfile::query();
-
-        if ($request->filled('driver_id')) {
-            $query->where('driver_id', 'like', '%' . $request->driver_id . '%');
-        }
-
-        if ($request->filled('name')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('first_name', 'like', '%' . $request->name . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->name . '%');
-            });
-        }
-
-        $driver = $query->get();
-
-        return view('admin.driver.index', compact('driver'));
-    }
-
-    public function edit($id)
-    {
-        $driver = DriverProfile::findOrFail($id);
-        return view('admin.driver.drivermoreinfo', compact('driver'));
-    }
-
-    public function view($id)
-    {
-        $driver = DriverProfile::findOrFail($id);
-        return view('admin.driver.view', compact('driver'));
-    }
-
+    // Step 2: Save Driver Info
     public function storedriverinfo(Request $request)
     {
         $validated = $request->validate([
-            'last_name' => 'required|string',
-            'first_name' => 'required|string',
-            'middle_name' => 'required|string',
-            'suffix' => 'nullable|string',
-            'contact_number' => 'required|string',
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
@@ -62,24 +29,30 @@ class DriverController extends Controller
             'emergency_contact' => 'nullable|string',
         ]);
 
+        // Calculate age from birthdate
         if (!empty($validated['date_of_birth'])) {
             $dob = Carbon::parse($validated['date_of_birth']);
             $validated['age'] = $dob->age;
         }
 
+        // Create unique driver ID
         $validated['driver_id'] = 'DRV-' . strtoupper(Str::random(6));
 
+        // Create Driver Profile in the database
         $driver = DriverProfile::create($validated);
 
+        // Redirect to "more info" page after registration
         return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
     }
 
+    // Step 3: Edit Driver More Info (Additional Details)
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
         return view('admin.driver.drivermoreinfo', compact('driver'));
     }
 
+    // Step 4: Store More Info (Add Licenses, Files, and Other Details)
     public function storeMoreInfo(Request $request, $id)
     {
         $driver = DriverProfile::findOrFail($id);
@@ -98,6 +71,7 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
+        // File uploads (license, medical, drug tests)
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
@@ -110,8 +84,34 @@ class DriverController extends Controller
             $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
         }
 
+        // Update the Driver Profile with the additional info
         $driver->update($validated);
 
+        // Redirect back to the driver index with success message
         return redirect()->route('admin.driver.index')->with('success', 'Driver Info Updated!');
+    }
+
+    // View driver details
+    public function view($id)
+    {
+        $driver = DriverProfile::findOrFail($id);
+        return view('admin.driver.view', compact('driver'));
+    }
+
+    // Search driver info (admin dashboard)
+    public function index(Request $request)
+    {
+        $query = DriverProfile::query();
+
+        if ($request->filled('driver_id')) {
+            $query->where('driver_id', 'like', '%' . $request->driver_id . '%');
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+        $driver = $query->get();
+
+        return view('admin.driver.index', compact('driver'));
     }
 }
