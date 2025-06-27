@@ -25,8 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         //kay driver profiles
-        Route::get('/drivers', [DriverController::class, 'index'])->name('driver.index');
-        Route::get('/drivers/create', [DriverController::class, 'create'])->name('driver.create');
+        Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
+        Route::get('/driver/create', [DriverController::class, 'create'])->name('driver.create');
         Route::get('/driver/profile/edit/{user}', [DriverController::class, 'edit'])->name('driver.profile.edit');
         Route::post('/driver/profile/update/{user}', [DriverController::class, 'update'])->name('driver.profile.update');
 
