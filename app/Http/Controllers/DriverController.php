@@ -11,13 +11,11 @@ use Carbon\Carbon;
 
 class DriverController extends Controller
 {
-    // Step 1: Create Driver Info (Admin Only)
     public function createdriverinfo()
     {
         return view('admin.driver.driverinfo');
     }
 
-    // Step 2: Save Driver Info (Admin Only)
     public function storedriverinfo(Request $request)
     {
         $validated = $request->validate([
@@ -44,14 +42,12 @@ class DriverController extends Controller
         return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
     }
 
-    // Step 3: Edit Driver More Info (Admin Only)
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
         return view('admin.driver.drivermoreinfo', compact('driver'));
     }
 
-    // Step 4: Store More Info (Admin Only)
     public function storeMoreInfo(Request $request, $id)
     {
         $driver = DriverProfile::findOrFail($id);
@@ -87,14 +83,12 @@ class DriverController extends Controller
         return redirect()->route('admin.driver.index')->with('success', 'Driver Info Updated!');
     }
 
-    // View Driver Details (Admin Only)
     public function view($id)
     {
         $driver = DriverProfile::findOrFail($id);
         return view('admin.driver.view', compact('driver'));
     }
 
-    // Search and List Drivers (Admin Only)
     public function index(Request $request)
     {
         $query = DriverProfile::query();
@@ -107,27 +101,34 @@ class DriverController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
         }
 
-        $drivers = $query->get();
+        // Pagination: Fetch 10 records per page
+        $drivers = $query->paginate(10);
 
         return view('admin.driver.index', compact('drivers'));
     }
 
-
-    // Driver Self-Edit Profile (Driver Role)
     public function edit()
     {
         $user = Auth::user();
 
-        return view('driver.edit-profile', [
+        // Check if the user has an associated driver profile
+        if (!$user->driverProfile) {
+            return redirect()->back()->with('error', 'Driver profile not found.');
+        }
+
+        return view('driver.edit', [
             'user' => $user,
             'profile' => $user->driverProfile,
         ]);
     }
 
-    // Driver Self-Update Profile (Driver Role)
     public function update(Request $request)
     {
         $user = Auth::user();
+
+        if (!$user->driverProfile) {
+            return redirect()->back()->with('error', 'Driver profile not found.');
+        }
 
         $validated = $request->validate([
             'name' => 'required|string',
@@ -165,7 +166,40 @@ class DriverController extends Controller
         return redirect()->route('dashboard')->with('success', 'Driver profile updated successfully!');
     }
 
-    // Admin Delete Driver
+    public function editDriver($id)
+    {
+        $driver = DriverProfile::findOrFail($id);
+        return view('admin.driver.edit', compact('driver'));
+    }
+
+    public function updateDriver(Request $request, $id)
+    {
+        $driver = DriverProfile::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'nullable|email',
+            'address' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string',
+            'marital_status' => 'nullable|string',
+            'emergency_contact' => 'nullable|string',
+            'license_number' => 'nullable|string',
+            'license_expiry' => 'nullable|date',
+            'license_type' => 'nullable|string',
+            'vehicle_assigned' => 'nullable|string',
+            'route_assigned' => 'nullable|string',
+            'license_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'medical_cert_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $driver->update($validated);
+
+        return redirect()->route('admin.driver.index')->with('success', 'Driver updated successfully!');
+    }
+
     public function destroy($id)
     {
         $driver = DriverProfile::findOrFail($id);

@@ -152,13 +152,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($driver as $d)
+                                                @foreach($drivers as $d) {{-- ✅ Variable should be $drivers not $driver
+                                                --}}
+                                                @if($d && is_object($d))
                                                 <tr>
-                                                    <td>{{ $d->name }}</td>
-                                                    <td>{{ $d->phone_number }}</td>
-                                                    <td>{{ $d->license_number }}</td>
+                                                    <td>{{ $d->name ?? 'N/A' }}</td>
+                                                    <td>{{ $d->phone_number ?? 'N/A' }}</td>
+                                                    <td>{{ $d->license_number ?? 'N/A' }}</td>
                                                     <td>
-                                                        @if($d->license_image)
+                                                        @if(!empty($d->license_image))
                                                         <img src="{{ asset('storage/' . $d->license_image) }}"
                                                             width="100">
                                                         @else
@@ -166,7 +168,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($d->medical_cert_file)
+                                                        @if(!empty($d->medical_cert_file))
                                                         <a href="{{ asset('storage/' . $d->medical_cert_file) }}"
                                                             target="_blank">View</a>
                                                         @else
@@ -174,7 +176,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($d->drug_test_file)
+                                                        @if(!empty($d->drug_test_file))
                                                         <a href="{{ asset('storage/' . $d->drug_test_file) }}"
                                                             target="_blank">View</a>
                                                         @else
@@ -190,6 +192,7 @@
                                                         </button>
                                                         <a href="{{ route('admin.driver.edit', $d->id) }}"
                                                             class="btn btn-sm btn-warning">Edit</a>
+
                                                         <button type="button" class="btn btn-sm btn-danger"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#deleteModal{{ $d->id }}">
@@ -226,7 +229,6 @@
                                                                     <div class="col-md-6"><strong>Emergency
                                                                             Contact:</strong> {{ $d->emergency_contact
                                                                         }}</div>
-
                                                                     <div class="col-md-6"><strong>License
                                                                             Number:</strong> {{ $d->license_number }}
                                                                     </div>
@@ -285,40 +287,45 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- Delete Confirmation Modal --}}
+                                                {{-- Delete Modal --}}
                                                 <div class="modal fade" id="deleteModal{{ $d->id }}" tabindex="-1"
                                                     aria-labelledby="deleteModalLabel{{ $d->id }}" aria-hidden="true">
                                                     <div class="modal-dialog">
-                                                        <form action="{{ route('admin.driver.destroy', $d->id) }}"
-                                                            method="POST" class="modal-content">
-                                                            @csrf
-                                                            @method('DELETE')
+                                                        <div class="modal-content">
                                                             <div class="text-white modal-header bg-danger">
-                                                                <h5 class="modal-title">Confirm Delete</h5>
+                                                                <h5 class="modal-title"
+                                                                    id="deleteModalLabel{{ $d->id }}">Delete Driver</h5>
                                                                 <button type="button" class="btn-close btn-close-white"
-                                                                    data-bs-dismiss="modal"></button>
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 Are you sure you want to delete driver <strong>{{
-                                                                    $d->name }}</strong>?
+                                                                    $d->name }}</strong> ({{ $d->driver_id }})?
                                                             </div>
                                                             <div class="modal-footer">
+                                                                <form
+                                                                    action="{{ route('admin.driver.destroy', $d->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger">Yes,
+                                                                        Delete</button>
+                                                                </form>
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Cancel</button>
-                                                                <button type="submit"
-                                                                    class="btn btn-danger">Delete</button>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-
+                                                @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
 
                                         {{-- Pagination --}}
                                         <div class="mt-3">
-                                            {{ $driver->links() }}
+                                            {{ $drivers->links() }}
+
                                         </div>
 
                                         <a href="{{ route('admin.driver.create') }}" class="mt-3 btn btn-primary">Add
