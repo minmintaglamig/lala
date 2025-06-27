@@ -15,8 +15,8 @@ return new class extends Migration {
 
             // Personal Information
             $table->string('driver_id')->nullable();
-            $table->string('name');
-            $table->string('phone_number');
+            $table->string('name')->nullable(); // Allow name to be skipped
+            $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->date('date_of_birth')->nullable();
