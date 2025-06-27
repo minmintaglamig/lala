@@ -29,22 +29,23 @@ class DriverController extends Controller
             'marital_status' => 'nullable|string',
             'emergency_contact' => 'nullable|string',
         ]);
-
-        // Calculate age from birthdate
+        // Calculate age if date_of_birth is provided
         if (!empty($validated['date_of_birth'])) {
             $dob = Carbon::parse($validated['date_of_birth']);
             $validated['age'] = $dob->age;
         }
 
-        // Create unique driver ID
+        // ✅ Generate driver_id here
         $validated['driver_id'] = 'DRV-' . strtoupper(Str::random(6));
 
-        // Create Driver Profile in the database
+        // Save to database
         $driver = DriverProfile::create($validated);
 
-        // Redirect to "more info" page after registration
+        // Redirect to more info step
         return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
+
     }
+
 
     // Step 3: Edit Driver More Info (Additional Details)
     public function createdrivermoreinfo($id)
