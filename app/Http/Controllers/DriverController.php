@@ -13,6 +13,7 @@ class DriverController extends Controller
     public function createdriverinfo()
     {
         return view('admin.driver.driverinfo');
+
     }
 
     // Step 2: Save Driver Info
