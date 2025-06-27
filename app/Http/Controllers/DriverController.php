@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\DriverProfile;
+use App\Models\User;
 use Carbon\Carbon;
 
 class DriverController extends Controller
@@ -60,6 +61,7 @@ class DriverController extends Controller
         $driver = DriverProfile::findOrFail($id);
 
         $validated = $request->validate([
+
             'license_number' => 'nullable|string',
             'license_expiry' => 'nullable|date',
             'license_type' => 'nullable|string',
@@ -115,5 +117,57 @@ class DriverController extends Controller
         $driver = $query->get();
 
         return view('admin.driver.index', compact('driver'));
+    }
+    public function edit(User $user)
+    {
+        return view('driver.edit-profile', [
+            'user' => $user,
+            'profile' => $user->driverProfile,
+        ]);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'nullable|email',
+            'address' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string',
+            'marital_status' => 'nullable|string',
+            'emergency_contact' => 'nullable|string',
+            'license_number' => 'nullable|string',
+            'license_expiry' => 'nullable|date',
+            'license_type' => 'nullable|string',
+            'vehicle_assigned' => 'nullable|string',
+            'route_assigned' => 'nullable|string',
+            'license_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'medical_cert_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($request->hasFile('license_image')) {
+            $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
+        }
+
+        if ($request->hasFile('medical_cert_file')) {
+            $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
+        }
+
+        if ($request->hasFile('drug_test_file')) {
+            $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
+        }
+
+        $user->driverProfile->update($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Driver profile updated successfully!');
+    }
+    public function destroy($id)
+    {
+        $driver = DriverProfile::findOrFail($id);
+        $driver->delete();
+
+        return redirect()->route('admin.driver.index')->with('success', 'Driver deleted successfully!');
     }
 }
