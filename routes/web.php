@@ -48,6 +48,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/driver/{id}', [DriverController::class, 'updateDriver'])->name('driver.update');
         Route::delete('/driver/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
+        //driver location
+        // For submitting location (Driver only)
+        Route::post('/driver/location/update', [LocationUpdateController::class, 'store'])->middleware('auth');
+
+        // For fetching latest location of a driver
+        Route::get('/driver/{driver}/location', [LocationUpdateController::class, 'latest'])->middleware('auth');
+
         // kay vehicles
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicle.create');
@@ -80,6 +87,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//route for drivers to use LocUpdate Form
+Route::get('driver/send-location', function () {
+    return view('driver.send-location');
+})->middleware('auth')->name('driver.location.form');
+
+Route::post('/driver/location/update', [LocationUpdateController::class, 'store'])
+    ->middleware('auth')
+    ->name('driver.location.store');
 
 // Auth routes
 require __DIR__ . '/auth.php';

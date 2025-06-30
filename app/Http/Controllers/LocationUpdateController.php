@@ -4,47 +4,52 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LocationUpdate;
-
+use App\Models\DriverProfile;
+use Illuminate\Support\Facades\Auth;
 
 class LocationUpdateController extends Controller
 {
+    // Store location update from driver
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'delivery_job_id' => 'required|exists:delivery_jobs,id',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
+        $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
 
-        LocationUpdate::create([
-            'delivery_job_id' => $validated['delivery_job_id'],
-            'latitude' => $validated['latitude'],
-            'longitude' => $validated['longitude'],
-            'timestamp' => now(),
+        // Assuming authenticated user is a driver
+        $driverProfile = DriverProfile::where('user_id', Auth::id())->first();
+
+        if (!$driverProfile) {
+            return response()->json(['error' => 'Driver profile not found.'], 404);
+        }
+
+        $location = LocationUpdate::create([
+            'driver_id' => $driverProfile->id,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
-        return response()->json(['message' => 'Location update recorded successfully.']);
+        return response()->json(['message' => 'Location updated.', 'data' => $location]);
+    }
+
+    // Fetch the latest location of a driver (for Admin/Client)
+    public function latest($driverId)
+    {
+        $location = LocationUpdate::where('driver_id', $driverId)
+            ->latest()
+            ->first();
+
+        if (!$location) {
+            return response()->json(['error' => 'No location found'], 404);
+        }
+
+        return response()->json($location);
     }
 
     public function index()
     {
-        $jobs = \App\Models\DeliveryJob::with('locationUpdates')->get(); // optional: filter for active jobs
-        return view('admin.location.index', compact('jobs'));
+        return view('location.index');
     }
 
-    public function getDriverLocations()
-    {
-        $locations = LocationUpdate::latest()
-            ->get()
-            ->map(function ($location) {
-                return [
-                    'latitude' => $location->latitude,
-                    'longitude' => $location->longitude,
-                    'driver_id' => optional($location->deliveryJob->driver)->id ?? 'Unknown',
-                    'created_at' => $location->created_at,
-                ];
-            });
-
-        return response()->json($locations);
-    }
 }
