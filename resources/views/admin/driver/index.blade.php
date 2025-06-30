@@ -61,19 +61,26 @@
                         @else N/A @endif
                     </td>
                     <td>{{ $driver->driver_id ?? 'N/A' }}</td>
-                    <td class="gap-1 d-flex">
-                        <button onclick="openModal('viewModal{{ $driver->id }}')"
-                            class="px-3 py-1 text-sm text-white bg-green-200 rounded hover:bg-green-600">
-                            More Info.
-                        </button>
-                        <a href="{{ route('admin.driver.edit', $driver->id) }}"
-                            class="px-3 py-1 text-sm text-white bg-yellow-400 rounded hover:bg-yellow-500">Edit</a>
-                        <button onclick="openModal('deleteModal{{ $driver->id }}')"
-                            class="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700">
-                            Delete
-                        </button>
+                    <td>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="openModal('viewModal{{ $driver->id }}')"
+                                class="px-3 py-1 text-sm text-white transition bg-green-500 rounded hover:bg-green-600">
+                                More Info
+                            </button>
 
+                            <a href="{{ route('admin.driver.edit', $driver->id) }}"
+                                class="px-3 py-1 text-sm text-white transition bg-yellow-500 rounded hover:bg-yellow-600">
+                                Edit
+                            </a>
+
+                            <button onclick="openModal('deleteModal{{ $driver->id }}')"
+                                class="px-3 py-1 text-sm text-white transition bg-red-600 rounded hover:bg-red-700">
+                                Delete
+                            </button>
+                        </div>
                     </td>
+
+
                 </tr>
 
                 {{-- View Modal --}}
