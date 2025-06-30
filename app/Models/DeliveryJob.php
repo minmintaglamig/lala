@@ -18,6 +18,7 @@ class DeliveryJob extends Model
         return $this->belongsTo(User::class, 'driver_id');
     }
 
+
     public function locationUpdates()
     {
         return $this->hasMany(LocationUpdate::class);

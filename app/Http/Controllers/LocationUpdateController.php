@@ -12,25 +12,19 @@ class LocationUpdateController extends Controller
     // Store location update from driver
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
+            'driver_id' => 'required|exists:driver_profiles,id',
+            'delivery_job_id' => 'nullable|exists:delivery_jobs,id',
         ]);
 
-        // Assuming authenticated user is a driver
-        $driverProfile = DriverProfile::where('user_id', Auth::id())->first();
+        $location = LocationUpdate::create($validated);
 
-        if (!$driverProfile) {
-            return response()->json(['error' => 'Driver profile not found.'], 404);
-        }
-
-        $location = LocationUpdate::create([
-            'driver_id' => $driverProfile->id,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
+        return response()->json([
+            'message' => 'Location stored successfully.',
+            'data' => $location
         ]);
-
-        return response()->json(['message' => 'Location updated.', 'data' => $location]);
     }
 
     // Fetch the latest location of a driver (for Admin/Client)

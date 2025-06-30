@@ -15,6 +15,6 @@ class LocationUpdate extends Model
 
     public function deliveryJob()
     {
-        return $this->belongsTo(DeliveryJob::class, 'delivery_job_id');
+        return $this->belongsTo(DeliveryJob::class);
     }
 }

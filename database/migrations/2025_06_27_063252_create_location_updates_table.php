@@ -10,9 +10,12 @@ return new class extends Migration {
         Schema::create('location_updates', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('delivery_job_id')
-                ->constrained('delivery_jobs')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('delivery_job_id')->nullable();
+            $table->foreign('delivery_job_id')->
+                references('id')->
+                on('delivery_jobs')->
+                onDelete('cascade');
+
 
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);

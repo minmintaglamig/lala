@@ -68,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/delivery-jobs/{id}/track', [JobController::class, 'viewMap'])->name('job.track');
         Route::post('/delivery-jobs/{id}/status', [JobController::class, 'updateStatus'])->name('job.status.update');
         Route::get('/delivery-jobs/{id}/latest-location', [JobController::class, 'latestLocation'])->name('job.latestLocation');
+        Route::get('/admin/jobs/{id}/track', [JobController::class, 'track'])->name('admin.jobs.track');
 
         // try dynamic loc
         Route::get('/location', [LocationUpdateController::class, 'index'])->name('location.index');
@@ -75,7 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Driver sends location
-    Route::post('/driver/location-update', [LocationUpdateController::class, 'store'])->name('driver.location.store');
+    Route::post('/location-update', [LocationUpdateController::class, 'store'])->name('driver.location.store');
+
 
 });
 

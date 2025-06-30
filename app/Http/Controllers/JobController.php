@@ -55,4 +55,12 @@ class JobController extends Controller
         $jobs = DeliveryJob::with(['client', 'driver'])->get();
         return view('jobs.index', compact('jobs'));
     }
+
+    public function track($id)
+    {
+        $job = DeliveryJob::with('locationUpdates')->findOrFail($id);
+        $latestLocation = $job->locationUpdates()->latest()->first();
+
+        return view('admin.track', compact('job', 'latestLocation'));
+    }
 }
