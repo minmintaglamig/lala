@@ -9,8 +9,11 @@ class DriverProfile extends Model
     protected $fillable = [
         'user_id',
         'driver_id',
-        'name',
-        'phone_number',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'suffix',
+        'contact_number',
         'email',
         'address',
         'date_of_birth',
@@ -28,11 +31,24 @@ class DriverProfile extends Model
         'medical_cert_file',
         'drug_test_file'
 
-
     ];
+
+    // Each driver profile belongs to a user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // A driver can have many jobs
+    public function jobs()
+    {
+        return $this->hasMany(DeliveryJob::class, 'driver_id'); // assuming jobs.driver_id refers to driver_profile.id
+    }
+
+    // A driver can have many location updates
+    public function locationUpdates()
+    {
+        return $this->hasMany(LocationUpdate::class, 'driver_id'); // same assumption
+    }
 }
+

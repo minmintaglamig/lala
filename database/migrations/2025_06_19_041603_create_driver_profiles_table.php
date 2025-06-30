@@ -10,9 +10,12 @@ return new class extends Migration {
         Schema::create('driver_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('driver_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->string('driver_id')->unique();
+            $table->string('last_name');
+            $table->string('first_name');
+            $table->string('middle_name');
+            $table->string('suffix')->nullable();
+            $table->string('contact_number');
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->date('date_of_birth')->nullable();

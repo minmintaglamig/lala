@@ -19,8 +19,11 @@ class DriverController extends Controller
     public function storedriverinfo(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
-            'phone_number' => 'required|string',
+            'last_name' => 'required|string',
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
+            'suffix' => 'nullable|string',
+            'contact_number' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'date_of_birth' => 'nullable|date',

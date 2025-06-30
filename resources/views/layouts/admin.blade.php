@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Admin - @yield('title', 'Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('styles')
 </head>
 <body class="bg-white text-gray-900">
 
@@ -17,6 +18,6 @@
             @yield('content')
         </main>
     </div>
-
+@stack('scripts')
 </body>
 </html>

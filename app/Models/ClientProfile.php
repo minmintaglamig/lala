@@ -10,4 +10,10 @@ class ClientProfile extends Model
         'user_id',
         'address',
     ];
+
+    public function jobs()
+    {
+        return $this->hasMany(DeliveryJob::class, 'client_id');
+    }
+
 }
