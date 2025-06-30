@@ -5,10 +5,6 @@
 @section('content')
 <div class="container py-4">
 
-    <div class="mb-4 d-flex justify-content-between align-items-center">
-
-        <a href="{{ route('admin.driver.create') }}" class="btn btn-success">+ Add New Driver</a>
-    </div>
 
     {{-- Filters --}}
     <form method="GET" action="{{ route('admin.driver.index') }}" class="mb-4 row g-3">
@@ -66,11 +62,17 @@
                     </td>
                     <td>{{ $driver->driver_id ?? 'N/A' }}</td>
                     <td class="gap-1 d-flex">
-                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                            data-bs-target="#viewModal{{ $driver->id }}">View</button>
-                        <a href="{{ route('admin.driver.edit', $driver->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ $driver->id }}">Delete</button>
+                        <button onclick="openModal('viewModal{{ $driver->id }}')"
+                            class="px-3 py-1 text-sm text-white bg-green-200 rounded hover:bg-green-600">
+                            More Info.
+                        </button>
+                        <a href="{{ route('admin.driver.edit', $driver->id) }}"
+                            class="px-3 py-1 text-sm text-white bg-yellow-400 rounded hover:bg-yellow-500">Edit</a>
+                        <button onclick="openModal('deleteModal{{ $driver->id }}')"
+                            class="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700">
+                            Delete
+                        </button>
+
                     </td>
                 </tr>
 
