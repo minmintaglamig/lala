@@ -41,6 +41,19 @@ class LocationUpdateController extends Controller
         return response()->json($location);
     }
 
+    public function latestByJob($jobId)
+    {
+        $location = LocationUpdate::where('delivery_job_id', $jobId)
+            ->latest()
+            ->first();
+
+        if (!$location) {
+            return response()->json(['error' => 'No location found.'], 404);
+        }
+
+        return response()->json($location);
+    }
+
     public function index()
     {
         return view('location.index');

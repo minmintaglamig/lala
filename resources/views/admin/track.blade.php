@@ -22,10 +22,28 @@
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    L.marker([{{ $latestLocation->latitude }}, {{ $latestLocation->longitude }}])
+    // Create the initial marker
+    let marker = L.marker([{{ $latestLocation->latitude }}, {{ $latestLocation->longitude }}])
         .addTo(map)
         .bindPopup("Current Parcel Location")
         .openPopup();
+
+    // Poll for latest location every 10 seconds
+    function updateMarker() {
+        fetch("{{ route('api.job.latest-location', ['jobId' => $job->id]) }}")
+            .then(res => res.json())
+            .then(loc => {
+                if (loc.latitude && loc.longitude) {
+                    marker.setLatLng([loc.latitude, loc.longitude])
+                          .bindPopup("Updated: " + new Date(loc.timestamp).toLocaleString());
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching latest location:', err);
+            });
+    }
+
+    setInterval(updateMarker, 10000); // 10 seconds
 </script>
 @endif
 @endsection

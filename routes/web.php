@@ -77,8 +77,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Driver sends location
     Route::post('/location-update', [LocationUpdateController::class, 'store'])->name('driver.location.store');
-
-
+    //for Latest Job Location
+    Route::get('/api/job/{jobId}/latest-location', [LocationUpdateController::class, 'latestByJob'])
+        ->name('api.job.latest-location');
 });
 
 // ---------------------
