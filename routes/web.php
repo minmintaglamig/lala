@@ -13,12 +13,20 @@ Route::get('/', fn() => view('index'));
 // Dashboard redirect logic
 Route::get('/dashboard', function () {
     $user = Auth::user();
-    return match ($user->role) {
-        'Admin' => redirect('/admin/dashboard'),
-        'Driver' => redirect('/driver/dashboard'),
-        default => redirect('/client/dashboard'),
-    };
+
+    $role = strtolower(trim($user->role)); // Clean and lower the role
+
+    if ($role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif ($role === 'driver') {
+        return redirect()->route('driver.dashboard');
+    } elseif ($role === 'client') {
+        return redirect()->route('client.dashboard');
+    } else {
+        abort(403, 'Unauthorized role.');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -31,14 +39,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     // ---------------------
     Route::prefix('admin')->name('admin.')->group(function () {
-
-        // Driver Profiles
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
-        Route::get('/driver/create', [DriverController::class, 'create'])->name('driver.create');
-        Route::get('/driver/profile/edit/{user}', [DriverController::class, 'edit'])->name('driver.profile.edit');
-        Route::post('/driver/profile/update/{user}', [DriverController::class, 'update'])->name('driver.profile.update');
+        Route::get('/driver/create', [DriverController::class, 'createdriverinfo'])->name('driver.create');
+        Route::post('/driver', [DriverController::class, 'storedriverinfo'])->name('driver.store');
+        Route::get('/driver/{id}/moreinfo', [DriverController::class, 'createdrivermoreinfo'])->name('driver.drivermoreinfo');
+        Route::post('/driver/{id}/moreinfo', [DriverController::class, 'storeMoreInfo'])->name('driver.storemoreinfo');
+        Route::get('/driver/{id}/edit', [DriverController::class, 'editDriver'])->name('driver.edit');
+        Route::put('/driver/{id}', [DriverController::class, 'updateDriver'])->name('driver.update');
+        Route::delete('/driver/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
-        // Vehicles
+        // kay vehicles
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicle.create');
 

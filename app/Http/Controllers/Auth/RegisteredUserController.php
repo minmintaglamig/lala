@@ -62,11 +62,15 @@ public function store(Request $request): RedirectResponse
 
         DriverProfile::create([
             'user_id' => $user->id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'license_number' => $request->license_number,
             'address' => $request->address,
             'availability_status' => 'available',
             'rating' => null,
         ]);
+
     }
 
     if ($request->role === 'Client') {
