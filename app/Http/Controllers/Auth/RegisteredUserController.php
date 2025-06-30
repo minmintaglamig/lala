@@ -26,67 +26,64 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-public function store(Request $request): RedirectResponse
-{
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'phone_number' => ['required', 'digits:11'],
-        'role' => ['required', 'string'],
-        'password' => ['required', 'confirmed', Rules\Password::defaults()],
-    ]);
-
-    if ($request->role === 'Admin') {
+    public function store(Request $request): RedirectResponse
+    {
         $request->validate([
-            'access_code' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone_number' => ['required', 'digits:11'],
+            'role' => ['required', 'string'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        if ($request->access_code !== env('ADMIN_ACCESS_CODE')) {
-            return back()->withErrors(['access_code' => 'Invalid admin access code'])->withInput();
+        if ($request->role === 'Admin') {
+            $request->validate([
+                'access_code' => ['required', 'string'],
+            ]);
+
+            if ($request->access_code !== env('ADMIN_ACCESS_CODE')) {
+                return back()->withErrors(['access_code' => 'Invalid admin access code'])->withInput();
+            }
         }
-    }
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'phone_number' => $request->phone_number,
-        'role' => $request->role,
-        'password' => Hash::make($request->password),
-    ]);
-
-    if ($request->role === 'Driver') {
-        $request->validate([
-            'license_number' => ['required', 'string'],
-            'address' => ['required', 'string'],
-        ]);
-
-        DriverProfile::create([
-            'user_id' => $user->id,
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'license_number' => $request->license_number,
-            'address' => $request->address,
-            'availability_status' => 'available',
-            'rating' => null,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
         ]);
 
+        if ($request->role === 'Driver') {
+            $request->validate([
+                'license_number' => ['required', 'string'],
+                'address' => ['required', 'string'],
+            ]);
+
+            DriverProfile::create([
+                'user_id' => $user->id,
+                'name' => $user->name ?? '',
+                'phone_number' => $user->phone_number ?? '',
+                'email' => $user->email ?? '',
+
+            ]);
+
+        }
+
+        if ($request->role === 'Client') {
+            $request->validate([
+                'client_address' => ['required', 'string'],
+            ]);
+
+            ClientProfile::create([
+                'user_id' => $user->id,
+                'address' => $request->client_address,
+            ]);
+        }
+
+        event(new Registered($user));
+        Auth::login($user);
+
+        return redirect(route('dashboard'));
     }
-
-    if ($request->role === 'Client') {
-        $request->validate([
-            'client_address' => ['required', 'string'],
-        ]);
-
-        ClientProfile::create([
-            'user_id' => $user->id,
-            'address' => $request->client_address,
-        ]);
-    }
-
-    event(new Registered($user));
-    Auth::login($user);
-
-    return redirect(route('dashboard'));
-}
 }
