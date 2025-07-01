@@ -9,8 +9,8 @@
     {{-- Filters --}}
     <form method="GET" action="{{ route('admin.driver.index') }}" class="mb-4 row g-3">
         <div class="col-md-4">
-            <input type="text" name="driver_id" class="form-control" placeholder="Filter by Driver ID"
-                value="{{ request('driver_id') }}">
+            <input type="text" name="user_id" class="form-control" placeholder="Filter by Driver ID"
+                value="{{ request('user_id') }}">
         </div>
         <div class="col-md-4">
             <input type="text" name="name" class="form-control" placeholder="Filter by Name"
