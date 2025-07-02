@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\JobController;
 
-// Public Route
 Route::get('/', fn() => view('index'));
 
-// Redirect Based on Role After Login
 Route::get('/dashboard', function () {
     $role = strtolower(trim(Auth::user()->role));
 
@@ -21,16 +21,13 @@ Route::get('/dashboard', function () {
     };
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Authenticated and Verified Routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // --- Admin Routes ---
+    // ADMIN ROUTES
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
 
         // Driver Management
-        Route::get('/driver', [DriverController::class, 'index'])->name('admin.driver.index');
-
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
         Route::get('/driver/create', [DriverController::class, 'createdriverinfo'])->name('driver.create');
         Route::post('/driver', [DriverController::class, 'storedriverinfo'])->name('driver.store');
@@ -49,36 +46,59 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/location', 'admin.location.index')->name('location.index');
     });
 
-    // --- Driver Routes ---
+    // DRIVER ROUTES
     Route::prefix('driver')->name('driver.')->group(function () {
         Route::view('/dashboard', 'driver.dashboard')->name('dashboard');
 
-        // Profile Update Steps
+        // Profile
+        Route::get('/profile', [DriverController::class, 'show'])->name('profile.show');
         Route::get('/profile/info', [DriverController::class, 'edit'])->name('profile.updateDriverInfoForm');
         Route::post('/profile/info', [DriverController::class, 'updateDriverInfo'])->name('profile.updateDriverInfo');
         Route::get('/profile/more-info', [DriverController::class, 'showDriverMoreInfoForm'])->name('profile.updateDriverMoreInfo');
         Route::post('/profile/more-info', [DriverController::class, 'updateDriverMoreInfo'])->name('profile.updateDriverMoreInfo');
 
-        // View Profile
-        Route::get('/profile', [DriverController::class, 'show'])->name('profile.show');
+        // Assigned Jobs
+        Route::get('/assigned-jobs', [DriverController::class, 'assignedJobs'])->name('assignedjobs');
+
+        // Location Update
+        Route::get('/location', [DriverController::class, 'locationPage'])->name('location');
+        Route::post('/location/update', [DriverController::class, 'updateLocation'])->name('location.update');
+
+        // Availability Status
+        Route::get('/availability', [DriverController::class, 'showAvailabilityForm'])->name('availability');
+        Route::post('/availability', [DriverController::class, 'setAvailability'])->name('availability.set');
+
+        // Job History
+        Route::get('/job-history', [DriverController::class, 'jobHistory'])->name('history');
     });
 
-    // --- Client Dashboard (if applicable) ---
-    Route::view('/client/dashboard', 'client.dashboard')->name('client.dashboard');
+    // CLIENT ROUTES
+    Route::prefix('client')->name('client.')->group(function () {
+        Route::view('/dashboard', 'client.dashboard')->name('dashboard');
+
+        // Book a Delivery
+        Route::get('/book', [ClientController::class, 'showBookingForm'])->name('book');
+        Route::post('/book', [ClientController::class, 'submitBooking'])->name('book.submit');
+
+        // View My Requests
+        Route::get('/requests', [ClientController::class, 'myRequests'])->name('requests');
+
+        // Track Delivery Status
+        Route::get('/track', [ClientController::class, 'trackStatus'])->name('track');
+
+        // Job History & Receipts
+        Route::get('/history', [ClientController::class, 'jobHistory'])->name('history');
+        Route::get('/receipt/{job}', [ClientController::class, 'downloadReceipt'])->name('receipt.download');
+    });
 });
 
-// --- User Profile Settings ---
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Auth Scaffolding Routes (from Laravel Breeze/Fortify/etc.)
 require __DIR__ . '/auth.php';
 
-// Fallback Route
 Route::fallback(fn() => redirect('/dashboard'));
-
-// Resource Route for VehicleController (optional, may conflict with custom routes)
 Route::resource('vehicles', VehicleController::class);

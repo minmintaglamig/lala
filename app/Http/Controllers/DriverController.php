@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\DriverProfile;
+use App\Models\Job;
 use Carbon\Carbon;
 
 class DriverController extends Controller
@@ -264,5 +265,69 @@ class DriverController extends Controller
         session()->forget('driver_info_step1');
 
         return redirect()->route('driver.profile.show')->with('success', 'Driver profile saved successfully.');
+    }
+
+        // View assigned jobs
+    public function assignedJobs()
+    {
+        $jobs = Job::with('client')
+            ->where('driver_id', Auth::id())
+            ->whereIn('status', ['Pending', 'In Progress'])
+            ->get();
+
+        return view('driver.assigned-jobs', compact('jobs'));
+    }
+
+    // Location update form
+    public function locationPage()
+    {
+        return view('driver.location');
+    }
+
+    // Save driver location
+    public function updateLocation(Request $request)
+    {
+        $validated = $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+
+        $driver = Auth::user()->driverProfile;
+        $driver->update([
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+        ]);
+
+        return back()->with('success', 'Location updated.');
+    }
+
+    // Job History for driver
+    public function jobHistory()
+    {
+        $jobs = Job::with('rating')
+            ->where('driver_id', Auth::id())
+            ->where('status', 'Delivered')
+            ->get();
+
+        return view('driver.job-history', compact('jobs'));
+    }
+
+    // Availability status
+    public function showAvailabilityForm()
+    {
+        $driver = Auth::user()->driverProfile;
+        return view('driver.availability', compact('driver'));
+    }
+
+    public function setAvailability(Request $request)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:Available,On Delivery,Off Duty',
+        ]);
+
+        $driver = Auth::user()->driverProfile;
+        $driver->update(['availability_status' => $validated['status']]);
+
+        return back()->with('success', 'Availability updated.');
     }
 }

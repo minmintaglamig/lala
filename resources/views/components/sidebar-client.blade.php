@@ -3,8 +3,32 @@
     <ul class="space-y-4">
         <li>
             <a href="{{ route('client.dashboard') }}"
-               class="block hover:text-[#FCEF91] {{ request()->routeIs('admin.dashboard') ? 'font-bold underline' : '' }}">
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('client.dashboard') ? 'font-bold underline' : '' }}">
                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('client.book') }}"
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('client.book') ? 'font-bold underline' : '' }}">
+               Book a Delivery
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('client.requests') }}"
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('client.requests') ? 'font-bold underline' : '' }}">
+               View My Requests
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('client.track') }}"
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('client.track') ? 'font-bold underline' : '' }}">
+               Track Delivery Status
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('client.history') }}"
+               class="block hover:text-[#FCEF91] {{ request()->routeIs('client.history') ? 'font-bold underline' : '' }}">
+               Job History & Receipts
             </a>
         </li>
     </ul>

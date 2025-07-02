@@ -7,12 +7,34 @@
                 Dashboard
             </a>
         </li>
-        {{-- View Profile --}}
         <li>
             <a href="{{ route('driver.profile.show') }}"
                 class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.profile.show') ? 'font-bold underline' : '' }}">
                 View Profile
             </a>
         </li>
+        <li>
+            <a href="{{ route('driver.assignedjobs') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.assignedjobs') ? 'font-bold underline' : '' }}">
+                My Assigned Jobs
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('driver.location') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.location') ? 'font-bold underline' : '' }}">
+                Location Updates
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('driver.availability') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.availability') ? 'font-bold underline' : '' }}">
+                Set Availability Status
+            </a>   
+        </li>
+        <li>
+            <a href="{{ route('driver.history') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.history') ? 'font-bold underline' : '' }}">
+                Job History
+        </li
 
 </aside>
