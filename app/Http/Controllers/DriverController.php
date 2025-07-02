@@ -2,23 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\DriverProfile;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Models\DriverProfile;
 use Carbon\Carbon;
 
 class DriverController extends Controller
 {
-    // Step 1: Create Driver Info (Admin Only)
-    public function createdriverinfo()
+    // ===================== ADMIN METHODS =====================
+
+    // Admin: List all drivers
+    public function index(Request $request)
     {
-        return view('admin.driver.driverinfo');
+        $query = DriverProfile::query();
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', 'like', '%' . $request->user_id . '%');
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        // ✅ This returns a paginator
+        $drivers = $query->paginate(10);
+
+        return view('admin.driver.index', compact('drivers'));
     }
 
-    // Step 2: Save Driver Info (Admin Only)
-    public function storedriverinfo(Request $request)
+
+    // Admin: Show Step 1 form (basic info)
+    public function createdriverinfo()
+    {
+        return view('admin.drivers.create');
+    }
+
+    // Admin: Store Step 1 info (basic info)
+    public function storeDriverInfo(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string',
@@ -26,37 +47,31 @@ class DriverController extends Controller
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
+            'age' => 'nullable|integer',
             'gender' => 'nullable|string',
             'marital_status' => 'nullable|string',
             'emergency_contact' => 'nullable|string',
         ]);
 
-        // Calculate age if date_of_birth is provided
         if (!empty($validated['date_of_birth'])) {
-            $dob = Carbon::parse($validated['date_of_birth']);
-            $validated['age'] = $dob->age;
+            $validated['age'] = Carbon::parse($validated['date_of_birth'])->age;
         }
 
-        // Generate unique driver ID
-        $validated['driver_id'] = 'DRV-' . strtoupper(Str::random(6));
 
-        // Attach creator/admin user ID
-        $validated['created_by'] = Auth::id();
 
-        // Save driver profile
         $driver = DriverProfile::create($validated);
 
-        return redirect()->route('admin.driver.drivermoreinfo', $driver->id);
+        return redirect()->route('admin.drivers.moreinfo', $driver->id);
     }
 
-    // Step 3: Edit Driver More Info (Admin Only)
+    // Admin: Show Step 2 form (additional info)
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('admin.driver.drivermoreinfo', compact('driver'));
+        return view('admin.drivers.moreinfo', compact('driver'));
     }
 
-    // Step 4: Store More Info (Admin Only)
+    // Admin: Store Step 2 additional info
     public function storeMoreInfo(Request $request, $id)
     {
         $driver = DriverProfile::findOrFail($id);
@@ -75,64 +90,40 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // File uploads
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
-
         if ($request->hasFile('medical_cert_file')) {
             $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
         }
-
         if ($request->hasFile('drug_test_file')) {
             $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
         }
 
         $driver->update($validated);
 
-        return redirect()->route('admin.driver.index')->with('success', 'Driver Info Updated!');
+        return redirect()->route('admin.drivers.index')->with('success', 'Driver info updated!');
     }
 
-    // View Driver Details (Admin Only)
+    // Admin: View driver
     public function view($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('admin.driver.view', compact('driver'));
-    }
-
-    // Search and List Drivers (Admin Only)
-    public function index(Request $request)
-    {
-        $query = DriverProfile::query();
-
-        if ($request->filled('driver_id')) {
-            $query->where('driver_id', 'like', '%' . $request->driver_id . '%');
-        }
-
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-
-        $drivers = $query->get();
-
         return view('admin.driver.index', compact('drivers'));
+
     }
 
-    // Driver Self-Edit Profile (Driver Role)
-    public function edit()
+    // Admin: Edit driver
+    public function editDriver($id)
     {
-        $user = Auth::user();
-
-        return view('driver.edit-profile', [
-            'user' => $user,
-            'profile' => $user->driverProfile,
-        ]);
+        $driver = DriverProfile::findOrFail($id);
+        return view('admin.driver.edit', compact('driver'));
     }
 
-    // Driver Self-Update Profile (Driver Role)
-    public function update(Request $request)
+    // Admin: Update driver
+    public function updateDriver(Request $request, $id)
     {
-        $user = Auth::user();
+        $driver = DriverProfile::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string',
@@ -140,6 +131,7 @@ class DriverController extends Controller
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
+            'age' => 'nullable|integer',
             'gender' => 'nullable|string',
             'marital_status' => 'nullable|string',
             'emergency_contact' => 'nullable|string',
@@ -153,30 +145,124 @@ class DriverController extends Controller
             'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // File uploads
-        if ($request->hasFile('license_image')) {
-            $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
-        }
+        $driver->update($validated);
 
-        if ($request->hasFile('medical_cert_file')) {
-            $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
-        }
-
-        if ($request->hasFile('drug_test_file')) {
-            $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
-        }
-
-        $user->driverProfile->update($validated);
-
-        return redirect()->route('dashboard')->with('success', 'Driver profile updated successfully!');
+        return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully!');
     }
 
-    // Admin Delete Driver
+    // Admin: Delete driver
     public function destroy($id)
     {
         $driver = DriverProfile::findOrFail($id);
         $driver->delete();
 
-        return redirect()->route('admin.driver.index')->with('success', 'Driver deleted successfully!');
+        return redirect()->route('admin.drivers.index')->with('success', 'Driver deleted successfully!');
+    }
+
+    // ===================== DRIVER METHODS =====================
+
+    // Driver: Dashboard
+    public function dashboard()
+    {
+        $driver = Auth::user()->driverProfile;
+        return view('driver.dashboard', compact('driver'));
+    }
+
+    // Driver: Show profile
+    public function show()
+    {
+        $driver = Auth::user()->driverProfile;
+        if (!$driver) {
+            return redirect()->route('driver.profile.updateDriverInfoForm')->with('error', 'No profile found. Please complete your profile.');
+        }
+        return view('driver.profile.show', compact('driver'));
+    }
+
+    // Driver: Step 1 - Show form to update personal info
+    public function edit()
+    {
+        $driver = Auth::user()->driverProfile;
+        return view('driver.profile.updateDriverInfo', compact('driver'));
+    }
+
+    // Driver: Step 1 - Store to session
+    public function updateDriverInfo(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'nullable|email',
+            'address' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
+            'age' => 'nullable|integer',
+            'gender' => 'nullable|string',
+            'marital_status' => 'nullable|string',
+            'emergency_contact' => 'nullable|string',
+        ]);
+
+        if (!empty($validated['date_of_birth'])) {
+            $validated['age'] = Carbon::parse($validated['date_of_birth'])->age;
+        }
+
+        session(['driver_info_step1' => $validated]);
+
+        return redirect()->route('driver.profile.updateDriverMoreInfo');
+    }
+
+    // Driver: Step 2 - Show additional info form
+    public function showDriverMoreInfoForm()
+    {
+        if (!session()->has('driver_info_step1')) {
+            return redirect()->route('driver.profile.updateDriverInfoForm')->with('error', 'Step 1 must be completed.');
+        }
+
+        $driver = Auth::user()->driverProfile;
+        return view('driver.profile.updateDriverMoreInfo', compact('driver'));
+    }
+
+    // Driver: Step 2 - Save additional + step1 session data
+    public function updateDriverMoreInfo(Request $request)
+    {
+        $step1 = session('driver_info_step1');
+
+        if (!$step1) {
+            return redirect()->route('driver.profile.updateDriverInfoForm')->with('error', 'Step 1 data missing.');
+        }
+
+        if (!empty($step1['date_of_birth'])) {
+            $step1['age'] = Carbon::parse($step1['date_of_birth'])->age;
+        }
+
+        $validated = $request->validate([
+            'license_number' => 'nullable|string',
+            'license_expiry' => 'nullable|date',
+            'license_type' => 'nullable|string',
+            'additional_permits' => 'nullable|string',
+            'license_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'driver_status' => 'nullable|string',
+            'hire_date' => 'nullable|date',
+            'vehicle_assigned' => 'nullable|string',
+            'route_assigned' => 'nullable|string',
+            'medical_cert_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($request->hasFile('license_image')) {
+            $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
+        }
+        if ($request->hasFile('medical_cert_file')) {
+            $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
+        }
+        if ($request->hasFile('drug_test_file')) {
+            $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
+        }
+
+        $data = array_merge($step1, $validated);
+        $data['user_id'] = Auth::id();
+
+        DriverProfile::updateOrCreate(['user_id' => Auth::id()], $data);
+        session()->forget('driver_info_step1');
+
+        return redirect()->route('driver.profile.show')->with('success', 'Driver profile saved successfully.');
     }
 }

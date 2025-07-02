@@ -1,4 +1,4 @@
-@extends('layouts.driver')
+@extends('layouts.admin')
 
 @section('title', 'Dashboard')
 
