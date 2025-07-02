@@ -66,29 +66,44 @@
                 <th>DRIVER ID</th>
                 <th>DRIVER NAME</th>
                 <th>STATUS</th>
+                <th>PLATE NUMBER</th>
                 <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($availdriver as  $availdrivers)
+            @forelse ($availdriver as $driver)
+                @php
+                    // Get all vehicles for this driver by matching user_id
+                    $driverVehicles = $availvehicle->where('driver_id', $driver->user_id);
+                @endphp
                 <tr>
                     <td>{{ $id }}</td>
-                    <td>{{ $availdrivers->user_id }}</td>
-                    <td>{{ $availdrivers->name }}</td>
-                    <td>{{ $availdrivers->availability_status }}</td>
+                    <td>{{ $driver->user_id }}</td>
+                    <td>{{ $driver->name }}</td>
+                    <td>{{ $driver->availability_status }}</td>
                     <td>
-                        <a
-                            href="{{ route('job.assignnow.store', ['user_id' => $availdrivers->user_id, 'book_id' => $id]) }}">ASSIGN</a>
-
+                        @if ($driverVehicles->isNotEmpty())
+                            @foreach ($driverVehicles as $vehicle)
+                                <div style="margin-bottom: 5px;">
+                                    <span>{{ $vehicle->plate_number }}</span><br>
+                                </div>
+                            @endforeach
+                        @else
+                            <span style="color: gray;">No Available Vehicle</span>
+                        @endif
+                    <td> <a
+                            href="{{ route('job.assignnow.store', ['user_id' => $driver->user_id, 'book_id' => $id, 'vehicle_id' => $vehicle->id]) }}">ASSIGN</a>
                         /
                         <a href="#">CANCEL</a>
+                    </td>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align: center;">NO BOOKING</td>
+                    <td colspan="5" class="empty-row">NO AVAILABLE DRIVER</td>
                 </tr>
             @endforelse
         </tbody>
+
     </table>
 @endsection

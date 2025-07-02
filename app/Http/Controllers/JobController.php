@@ -15,21 +15,29 @@ class JobController extends Controller
         return view('admin.job.index', compact('book'));
     }
     public function assign($id)
-    {
-        $availdriver = DriverProfile::where('availability_status', 'available')->get();
+{
+    // Step 1: Get all available drivers
+    $availdriver = DriverProfile::where('availability_status', 'available')->get();
 
-        if ($availdriver->count() > 0) {
-            $availvehicle = Vehicle::where('status', 'available')->get();
-
-            if ($availvehicle->count() > 0) {
-                return view('admin.job.assign', compact('availdriver', 'availvehicle', 'id'));
-            } else {
-                return redirect()->back()->with('error', 'NO VEHICLE AVAILABLE');
-            }
-        } else {
-            return redirect()->back()->with('error', 'NO DRIVER AVAILABLE');
-        }
+    if ($availdriver->isEmpty()) {
+        return redirect()->back()->with('error', 'NO DRIVER AVAILABLE');
     }
+
+    // Step 2: Extract all user_ids from the available drivers
+    $userIds = $availdriver->pluck('user_id');
+
+    // Step 3: Get all available vehicles that belong to those user_ids
+    $availvehicle = Vehicle::where('status', 'available')
+        ->whereIn('driver_id', $userIds)
+        ->get();
+
+    if ($availvehicle->isEmpty()) {
+        return redirect()->back()->with('error', 'NO VEHICLE AVAILABLE');
+    }
+
+    return view('admin.job.assign', compact('availdriver', 'availvehicle', 'id'));
+}
+
 
 public function assignNow($driver_id, $book_id)
 {
