@@ -42,7 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
 
         // Job and Location Pages
-        Route::view('/job', 'admin.job.index')->name('job.index');
         Route::view('/location', 'admin.location.index')->name('location.index');
     });
 

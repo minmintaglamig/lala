@@ -20,8 +20,8 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('admin.job.index') }}"
-                class="block hover:text-[#FCEF91] {{ request()->routeIs('admin.job.index') ? 'font-bold underline' : '' }}">
+            <a href="{{ route('job.job.index') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('job.job.index') ? 'font-bold underline' : '' }}">
                 Jobs
             </a>
         </li>

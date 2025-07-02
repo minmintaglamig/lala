@@ -62,36 +62,25 @@
     <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
         <thead style="background-color: #f3f4f6;">
             <tr>
-                <th>ID</th>
-                <th>Driver_ID</th>
-                <th>Vehicle_ID</th>
-                <th>PICKUP</th>
-                <th>DROPOFF</th>
-                <th>DESCRIPTION</th>
-                <th>TIME</th>
+                <th>BOOK ID</th>
+                <th>DRIVER ID</th>
+                <th>DRIVER NAME</th>
                 <th>STATUS</th>
-                <th>CLIENT NAME</th>
-                <th>CLIENT CONTACT</th>
-                <th>PRICE</th>
                 <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($book as $books)
+            @forelse ($availdriver as  $availdrivers)
                 <tr>
-                    <td>{{ $books->id }}</td>
-                    <td>{{ $books->driver_id }}</td>
-                    <td>{{ $books->vehicle_id }}</td>
-                    <td>{{ $books->pickup_address }}</td>
-                    <td>{{ $books->dropoff_address }}</td>
-                    <td>{{ $books->package_description }}</td>
-                    <td>{{ $books->scheduled_time }}</td>
-                    <td>{{ $books->delivery_status }}</td>
-                    <td>{{ $books->client_name }}</td>
-                    <td>{{ $books->client_contact }}</td>
-                    <td>{{ $books->price }}</td>
+                    <td>{{ $id }}</td>
+                    <td>{{ $availdrivers->user_id }}</td>
+                    <td>{{ $availdrivers->name }}</td>
+                    <td>{{ $availdrivers->availability_status }}</td>
                     <td>
-                        <a href="{{ route('job.driver.assign', $books->id) }}">ASSIGN</a>
+                        <a
+                            href="{{ route('job.assignnow.store', ['user_id' => $availdrivers->user_id, 'book_id' => $id]) }}">ASSIGN</a>
+
+                        /
                         <a href="#">CANCEL</a>
                     </td>
                 </tr>

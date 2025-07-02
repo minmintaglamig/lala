@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d
+class ComposerStaticInit10875ef2c80b955b44ef80d1330a98f4
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -6339,6 +6339,7 @@ class ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d
         'Symfony\\Component\\HttpKernel\\Fragment\\RoutableFragmentRenderer' => __DIR__ . '/..' . '/symfony/http-kernel/Fragment/RoutableFragmentRenderer.php',
         'Symfony\\Component\\HttpKernel\\Fragment\\SsiFragmentRenderer' => __DIR__ . '/..' . '/symfony/http-kernel/Fragment/SsiFragmentRenderer.php',
         'Symfony\\Component\\HttpKernel\\HttpCache\\AbstractSurrogate' => __DIR__ . '/..' . '/symfony/http-kernel/HttpCache/AbstractSurrogate.php',
+        'Symfony\\Component\\HttpKernel\\HttpCache\\CacheWasLockedException' => __DIR__ . '/..' . '/symfony/http-kernel/HttpCache/CacheWasLockedException.php',
         'Symfony\\Component\\HttpKernel\\HttpCache\\Esi' => __DIR__ . '/..' . '/symfony/http-kernel/HttpCache/Esi.php',
         'Symfony\\Component\\HttpKernel\\HttpCache\\HttpCache' => __DIR__ . '/..' . '/symfony/http-kernel/HttpCache/HttpCache.php',
         'Symfony\\Component\\HttpKernel\\HttpCache\\ResponseCacheStrategy' => __DIR__ . '/..' . '/symfony/http-kernel/HttpCache/ResponseCacheStrategy.php',
@@ -6940,9 +6941,9 @@ class ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd6c73ea5dadcd971050eeb806511e47d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit10875ef2c80b955b44ef80d1330a98f4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit10875ef2c80b955b44ef80d1330a98f4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit10875ef2c80b955b44ef80d1330a98f4::$classMap;
 
         }, null, ClassLoader::class);
     }

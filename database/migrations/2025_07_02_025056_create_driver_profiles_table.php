@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('driver_profiles', function (Blueprint $table) {
+       Schema::table('driver_profiles', function (Blueprint $table) {
+    // ✅ CORRECT! This modifies the existing table
+    $table->string('new_column')->nullable(); // example
+
             $table->id();
 
             // Foreign Keys
@@ -41,6 +44,8 @@ return new class extends Migration {
             // Health & Safety
             $table->string('medical_cert_file')->nullable();
             $table->string('drug_test_file')->nullable();
+
+            $table->enum('availability_status', ['available','maintenance', 'unavailable'])->default('available');
 
             $table->timestamps();
         });
