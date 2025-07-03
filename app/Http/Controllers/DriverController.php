@@ -267,7 +267,7 @@ class DriverController extends Controller
         return redirect()->route('driver.profile.show')->with('success', 'Driver profile saved successfully.');
     }
 
-        // View assigned jobs
+    // View assigned jobs
     public function assignedJobs()
     {
         $jobs = Job::with('client')

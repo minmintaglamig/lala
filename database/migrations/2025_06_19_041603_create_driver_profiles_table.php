@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('driver_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('driver_id')->nullable();
             $table->string('name')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();

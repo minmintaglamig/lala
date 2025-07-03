@@ -3,104 +3,99 @@
 @section('title', 'Driver Profile')
 
 @section('content')
-<div class="container py-4">
+<div class="flex min-h-screen">
 
-
-    {{-- Filters --}}
-    <form method="GET" action="{{ route('admin.driver.index') }}" class="mb-4 row g-3">
-        <div class="col-md-4">
-            <input type="text" name="user_id" class="form-control" placeholder="Filter by Driver ID"
+    <div class="container mx-auto">
+        {{-- Filters --}}
+        <form method="GET" action="{{ route('admin.driver.index') }}"
+            class="grid grid-cols-1 gap-4 mb-4 md:grid-cols-3">
+            <input type="text" name="user_id" class="w-full px-3 py-2 border rounded" placeholder="Filter by Driver ID"
                 value="{{ request('user_id') }}">
-        </div>
-        <div class="col-md-4">
-            <input type="text" name="name" class="form-control" placeholder="Filter by Name"
+            <input type="text" name="name" class="w-full px-3 py-2 border rounded" placeholder="Filter by Name"
                 value="{{ request('name') }}">
+            <div class="flex gap-2">
+                <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Filter</button>
+                <a href="{{ route('admin.driver.index') }}"
+                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300">Reset</a>
+            </div>
+        </form>
+
+        {{-- Table --}}
+        <div class="overflow-x-auto border rounded shadow bg-orange">
+            <table class="w-full table-auto">
+                <thead class="text-black bg-gray-800">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Contact</th>
+                        <th class="px-4 py-2 text-left">License No</th>
+                        <th class="px-4 py-2 text-left">License Image</th>
+                        <th class="px-4 py-2 text-left">Medical Cert</th>
+                        <th class="px-4 py-2 text-left">Drug Test</th>
+                        <th class="px-4 py-2 text-left">Driver ID</th>
+                        <th class="px-4 py-2 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm text-gray-800">
+                    @forelse($drivers as $driver)
+                    <tr class="border-b hover:bg-gray-100">
+                        <td class="px-4 py-2">{{ $driver->name ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">{{ $driver->phone_number ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">{{ $driver->license_number ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">
+                            @if($driver->license_image)
+                            <img src="{{ asset('storage/' . $driver->license_image) }}" class="w-16 rounded">
+                            @else
+                            N/A
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            @if($driver->medical_cert_file)
+                            <a href="{{ asset('storage/' . $driver->medical_cert_file) }}" target="_blank"
+                                class="text-blue-600 underline">View</a>
+                            @else
+                            N/A
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            @if($driver->drug_test_file)
+                            <a href="{{ asset('storage/' . $driver->drug_test_file) }}" target="_blank"
+                                class="text-blue-600 underline">View</a>
+                            @else
+                            N/A
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">{{ $driver->driver_id ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="openModal('viewModal{{ $driver->id }}')"
+                                    class="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700">More
+                                    Info</button>
+                                <a href="{{ route('admin.driver.edit', $driver->id) }}"
+                                    class="px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>
+                                <button onclick="openModal('deleteModal{{ $driver->id }}')"
+                                    class="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {{-- Include Modals --}}
+                    @include('admin.driver.partials.view-modal', ['driver' => $driver])
+                    @include('admin.driver.partials.delete-modal', ['driver' => $driver])
+
+                    @empty
+                    <tr>
+                        <td colspan="8" class="px-4 py-4 text-center text-gray-500">No driver records found.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-        <div class="gap-2 col-md-4 d-flex">
-            <button type="submit" class="btn btn-primary">Filter</button>
-            <a href="{{ route('admin.driver.index') }}" class="btn btn-outline-secondary">Reset</a>
+
+        {{-- Pagination --}}
+        <div class="mt-4">
+            {{ $drivers->links() }}
         </div>
-    </form>
-
-    {{-- Table --}}
-    <div class="table-responsive">
-        <table class="table align-middle table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>License No</th>
-                    <th>License Image</th>
-                    <th>Medical Cert</th>
-                    <th>Drug Test</th>
-                    <th>Driver ID</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($drivers as $driver)
-                <tr>
-                    <td>{{ $driver->name ?? 'N/A' }}</td>
-                    <td>{{ $driver->phone_number ?? 'N/A' }}</td>
-                    <td>{{ $driver->license_number ?? 'N/A' }}</td>
-                    <td>
-                        @if($driver->license_image)
-                        <img src="{{ asset('storage/' . $driver->license_image) }}" width="70" class="rounded">
-                        @else N/A @endif
-                    </td>
-                    <td>
-                        @if($driver->medical_cert_file)
-                        <a href="{{ asset('storage/' . $driver->medical_cert_file) }}" target="_blank"
-                            class="btn btn-sm btn-outline-info">View</a>
-                        @else N/A @endif
-                    </td>
-                    <td>
-                        @if($driver->drug_test_file)
-                        <a href="{{ asset('storage/' . $driver->drug_test_file) }}" target="_blank"
-                            class="btn btn-sm btn-outline-info">View</a>
-                        @else N/A @endif
-                    </td>
-                    <td>{{ $driver->driver_id ?? 'N/A' }}</td>
-                    <td>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="openModal('viewModal{{ $driver->id }}')"
-                                class="px-3 py-1 text-sm text-white transition bg-green-500 rounded hover:bg-green-600">
-                                More Info
-                            </button>
-
-                            <a href="{{ route('admin.driver.edit', $driver->id) }}"
-                                class="px-3 py-1 text-sm text-white transition bg-yellow-500 rounded hover:bg-yellow-600">
-                                Edit
-                            </a>
-
-                            <button onclick="openModal('deleteModal{{ $driver->id }}')"
-                                class="px-3 py-1 text-sm text-white transition bg-red-600 rounded hover:bg-red-700">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-
-
-                </tr>
-
-                {{-- View Modal --}}
-                @include('admin.driver.partials.view-modal', ['driver' => $driver])
-
-                {{-- Delete Modal --}}
-                @include('admin.driver.partials.delete-modal', ['driver' => $driver])
-
-                @empty
-                <tr>
-                    <td colspan="8" class="text-center text-muted">No driver records found.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
     </div>
-
-    {{-- Pagination --}}
-    <div class="mt-3">
-        {{ $drivers->links() }}
-    </div>
+    </main>
 </div>
 @endsection
