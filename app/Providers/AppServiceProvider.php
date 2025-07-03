@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
          Route::middleware('web') // or 'api'
         ->group(base_path('routes/Job.php'));
 
+         Route::middleware('web') // or 'api'
+        ->group(base_path('routes/adminvehicle.php'));
+
     }
 }
 

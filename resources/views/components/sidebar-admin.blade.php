@@ -14,9 +14,9 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('admin.vehicle.index') }}"
-                class="block hover:text-[#FCEF91] {{ request()->routeIs('admin.vehicle.index') ? 'font-bold underline' : '' }}">
-                Vehicles
+            <a href="{{ route('vehicleniash.vehicleniash.index') }}"
+                class="block hover:text-[#FCEF91] {{ request()->routeIs('vehicleniash.vehicleniash.index') ? 'font-bold underline' : '' }}">
+                Vehiclesssd
             </a>
         </li>
         <li>

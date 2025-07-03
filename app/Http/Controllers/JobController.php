@@ -16,17 +16,14 @@ class JobController extends Controller
     }
     public function assign($id)
 {
-    // Step 1: Get all available drivers
     $availdriver = DriverProfile::where('availability_status', 'available')->get();
 
     if ($availdriver->isEmpty()) {
         return redirect()->back()->with('error', 'NO DRIVER AVAILABLE');
     }
 
-    // Step 2: Extract all user_ids from the available drivers
     $userIds = $availdriver->pluck('user_id');
 
-    // Step 3: Get all available vehicles that belong to those user_ids
     $availvehicle = Vehicle::where('status', 'available')
         ->whereIn('driver_id', $userIds)
         ->get();
