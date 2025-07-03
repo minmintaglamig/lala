@@ -62,44 +62,48 @@
     <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
         <thead style="background-color: #f3f4f6;">
             <tr>
-                <th>ID</th>
-                <th>Driver_ID</th>
-                <th>Vehicle_ID</th>
-                <th>PICKUP</th>
-                <th>DROPOFF</th>
-                <th>DESCRIPTION</th>
-                <th>TIME</th>
+                <th>BOOK ID</th>
+                <th>DRIVER ID</th>
+                <th>DRIVER NAME</th>
                 <th>STATUS</th>
-                <th>CLIENT NAME</th>
-                <th>CLIENT CONTACT</th>
-                <th>PRICE</th>
+                <th>PLATE NUMBER</th>
                 <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($book as $books)
+            @forelse ($availdriver as $driver)
+                @php
+                    // Get all vehicles for this driver by matching user_id
+                    $driverVehicles = $availvehicle->where('driver_id', $driver->user_id);
+                @endphp
                 <tr>
-                    <td>{{ $books->id }}</td>
-                    <td>{{ $books->driver_id }}</td>
-                    <td>{{ $books->vehicle_id }}</td>
-                    <td>{{ $books->pickup_address }}</td>
-                    <td>{{ $books->dropoff_address }}</td>
-                    <td>{{ $books->package_description }}</td>
-                    <td>{{ $books->scheduled_time }}</td>
-                    <td>{{ $books->delivery_status }}</td>
-                    <td>{{ $books->client_name }}</td>
-                    <td>{{ $books->client_contact }}</td>
-                    <td>{{ $books->price }}</td>
+                    <td>{{ $id }}</td>
+                    <td>{{ $driver->user_id }}</td>
+                    <td>{{ $driver->name }}</td>
+                    <td>{{ $driver->availability_status }}</td>
                     <td>
-                        <a href="{{ route('job.driver.assign', $books->id) }}">ASSIGN</a>
+                        @if ($driverVehicles->isNotEmpty())
+                            @foreach ($driverVehicles as $vehicle)
+                                <div style="margin-bottom: 5px;">
+                                    <span>{{ $vehicle->plate_number }}</span><br>
+                                </div>
+                            @endforeach
+                        @else
+                            <span style="color: gray;">No Available Vehicle</span>
+                        @endif
+                    <td> <a
+                            href="{{ route('job.assignnow.store', ['user_id' => $driver->user_id, 'book_id' => $id, 'vehicle_id' => $vehicle->id]) }}">ASSIGN</a>
+                        /
                         <a href="#">CANCEL</a>
+                    </td>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align: center;">NO BOOKING</td>
+                    <td colspan="5" class="empty-row">NO AVAILABLE DRIVER</td>
                 </tr>
             @endforelse
         </tbody>
+
     </table>
 @endsection
