@@ -26,20 +26,20 @@ class DriverController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
         }
 
-        // ✅ This returns a paginator
+
         $drivers = $query->paginate(10);
 
         return view('admin.driver.index', compact('drivers'));
     }
 
 
-    // Admin: Show Step 1 form (basic info)
+    // Admin: form (basic info)
     public function createdriverinfo()
     {
         return view('admin.drivers.create');
     }
 
-    // Admin: Store Step 1 info (basic info)
+    // Admin:  info (basic info)
     public function storeDriverInfo(Request $request)
     {
         $validated = $request->validate([
@@ -65,14 +65,14 @@ class DriverController extends Controller
         return redirect()->route('admin.drivers.moreinfo', $driver->id);
     }
 
-    // Admin: Show Step 2 form (additional info)
+    // Admin: form (additional info)
     public function createdrivermoreinfo($id)
     {
         $driver = DriverProfile::findOrFail($id);
         return view('admin.drivers.moreinfo', compact('driver'));
     }
 
-    // Admin: Store Step 2 additional info
+    // Admin:  additional info
     public function storeMoreInfo(Request $request, $id)
     {
         $driver = DriverProfile::findOrFail($id);
@@ -179,14 +179,14 @@ class DriverController extends Controller
         return view('driver.profile.show', compact('driver'));
     }
 
-    // Driver: Step 1 - Show form to update personal info
+    // Driver:  update personal info
     public function edit()
     {
         $driver = Auth::user()->driverProfile;
         return view('driver.profile.updateDriverInfo', compact('driver'));
     }
 
-    // Driver: Step 1 - Store to session
+    // Driver:
     public function updateDriverInfo(Request $request)
     {
         $validated = $request->validate([
@@ -210,7 +210,7 @@ class DriverController extends Controller
         return redirect()->route('driver.profile.updateDriverMoreInfo');
     }
 
-    // Driver: Step 2 - Show additional info form
+    // Driver:  additional info form
     public function showDriverMoreInfoForm()
     {
         if (!session()->has('driver_info_step1')) {
@@ -221,7 +221,7 @@ class DriverController extends Controller
         return view('driver.profile.updateDriverMoreInfo', compact('driver'));
     }
 
-    // Driver: Step 2 - Save additional + step1 session data
+    // Driver: Save additional info
     public function updateDriverMoreInfo(Request $request)
     {
         $step1 = session('driver_info_step1');
