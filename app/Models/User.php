@@ -51,7 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function driverProfile()
     {
-        return $this->hasOne(DriverProfile::class);
+        return $this->hasOne(DriverProfile::class, 'user_id');
+
     }
 
     public function clientProfile()

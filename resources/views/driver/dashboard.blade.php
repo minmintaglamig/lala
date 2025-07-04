@@ -1,5 +1,6 @@
+@extends('layouts.driver')
+
 <x-app-layout>
-    @extends('layouts.driver')
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Driver Dashboard') }}
@@ -8,41 +9,51 @@
 
     <div class="py-10">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            {{-- Welcome Message --}}
-            <div class="mb-6 text-3xl font-bold text-[#EA2F14]">
-                Welcome, {{ Auth::user()->name }} ({{ Auth::user()->role ?? 'Driver' }})
+
+            {{-- Greeting --}}
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-red-600">
+                    Hey {{ Auth::user()->name }}
+                </h1>
+                <p class="text-sm text-gray-600">
+                    You are logged in as <span class="font-medium">{{ Auth::user()->role ?? 'Driver' }}</span>
+                </p>
             </div>
 
-            {{-- Status Panel --}}
-            <div class="p-6 mb-6 bg-white rounded-lg shadow">
-                <h3 class="mb-2 text-lg font-semibold text-gray-700">Your Current Status</h3>
-                <p class="text-gray-700">You are currently logged in as a driver.</p>
-                <p class="text-gray-700">Please ensure your profile is up to date.</p>
+            {{-- Availability --}}
+            <div class="p-6 mb-8 bg-white border-l-4 border-blue-500 shadow rounded-xl">
+                <h3 class="mb-2 text-lg font-semibold text-gray-800">Your Availability</h3>
+
+                @php
+                $status = $availability_status ?? 'Not Set';
+
+                $colorMap = [
+                'Available' => 'text-green-600',
+                'On Delivery' => 'text-yellow-600',
+                'Off Duty' => 'text-gray-500',
+                'Not Set' => 'text-gray-400'
+                ];
+
+                $colorClass = $colorMap[$status] ?? 'text-gray-400';
+                @endphp
+
+                <div class="flex items-center justify-between">
+                    <p class="text-gray-700">
+                        Status:
+                        <span class="font-bold {{ $colorClass }}">
+                            {{ $status }}
+                        </span>
+                    </p>
+
+                    <a href="{{ route('driver.availability') }}" class="text-sm text-blue-600 hover:underline">
+                        Change Status
+                    </a>
+                </div>
             </div>
 
-            {{-- Optional Quick Stats Cards --}}
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div class="p-4 bg-blue-100 rounded shadow">
-                    <h4 class="text-sm font-semibold text-blue-900">Profile Status</h4>
-                    <p class="text-lg font-bold text-blue-800">✔ Updated</p>
-                </div>
-                <div class="p-4 bg-green-100 rounded shadow">
-                    <h4 class="text-sm font-semibold text-green-900">License</h4>
-                    <p class="text-lg font-bold text-green-800">Valid</p>
-                </div>
-                <div class="p-4 bg-yellow-100 rounded shadow">
-                    <h4 class="text-sm font-semibold text-yellow-900">Vehicle Assigned</h4>
-                    <p class="text-lg font-bold text-yellow-800">Truck #14</p>
-                </div>
-            </div>
+            {{-- Add more widgets or cards below if needed --}}
+            {{-- Example: Assigned Jobs, Job History, etc. --}}
 
-            {{-- Action Button --}}
-            <div class="mt-8">
-                <a href="{{ route('driver.profile.updateDriverInfoForm') }}"
-                    class="inline-block px-5 py-2 text-sm font-medium text-white bg-yellow-500 rounded shadow hover:bg-yellow-600">
-                    Update Personal Info
-                </a>
-            </div>
         </div>
     </div>
 </x-app-layout>

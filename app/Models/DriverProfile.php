@@ -8,7 +8,6 @@ class DriverProfile extends Model
 {
     protected $fillable = [
         'user_id',
-        'driver_id',
         'name',
         'phone_number',
         'email',
@@ -26,7 +25,8 @@ class DriverProfile extends Model
         'vehicle_assigned',
         'route_assigned',
         'medical_cert_file',
-        'drug_test_file'
+        'drug_test_file',
+        'availability_status'
 
 
     ];

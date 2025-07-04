@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-       Schema::table('driver_profiles', function (Blueprint $table) {
-    // ✅ CORRECT! This modifies the existing table
-    $table->string('new_column')->nullable(); // example
+        Schema::table('driver_profiles', function (Blueprint $table) {
+            // ✅ CORRECT! This modifies the existing table
+            $table->string('new_column')->nullable(); // example
 
             $table->id();
 
@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             // Personal Information
-            $table->string('driver_id')->nullable();
+
             $table->string('name')->nullable(); // Allow name to be skipped
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
@@ -45,7 +45,7 @@ return new class extends Migration {
             $table->string('medical_cert_file')->nullable();
             $table->string('drug_test_file')->nullable();
 
-            $table->enum('availability_status', ['available','maintenance', 'unavailable'])->default('available');
+            $table->enum('availability_status', ['available', 'maintenance', 'unavailable'])->default('available');
 
             $table->timestamps();
         });

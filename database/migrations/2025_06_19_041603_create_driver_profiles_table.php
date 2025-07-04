@@ -38,6 +38,8 @@ return new class extends Migration {
             $table->string('medical_cert_file')->nullable();
             $table->string('drug_test_file')->nullable();
 
+            $table->string('availability_status')->default('Available');
+
             $table->timestamps();
         });
     }

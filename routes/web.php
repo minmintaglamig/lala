@@ -37,6 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/driver/{id}', [DriverController::class, 'updateDriver'])->name('driver.update');
         Route::delete('/driver/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
+        // Admin sets driver availability
+        Route::post('/drivers/{id}/availability', [DriverController::class, 'adminSetAvailability'])->name('driver.availability.set');
+
+
         // Vehicle Management
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
@@ -47,7 +51,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // DRIVER ROUTES
     Route::prefix('driver')->name('driver.')->group(function () {
-        Route::view('/dashboard', 'driver.dashboard')->name('dashboard');
+
+        Route::get('/dashboard', [DriverController::class, 'dashboard'])->name('dashboard');
 
         // Profile
         Route::get('/profile', [DriverController::class, 'show'])->name('profile.show');
@@ -56,16 +61,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/profile/more-info', [DriverController::class, 'showDriverMoreInfoForm'])->name('profile.updateDriverMoreInfo');
         Route::post('/profile/more-info', [DriverController::class, 'updateDriverMoreInfo'])->name('profile.updateDriverMoreInfo');
 
+        // Availability
+        Route::get('/availability', [DriverController::class, 'showAvailabilityForm'])->name('availability');
+        Route::post('/availability', [DriverController::class, 'setAvailability'])->name('availability.set');
+
+
         // Assigned Jobs
         Route::get('/assigned-jobs', [DriverController::class, 'assignedJobs'])->name('assignedjobs');
 
         // Location Update
         Route::get('/location', [DriverController::class, 'locationPage'])->name('location');
         Route::post('/location/update', [DriverController::class, 'updateLocation'])->name('location.update');
-
-        // Availability Status
-        Route::get('/availability', [DriverController::class, 'showAvailabilityForm'])->name('availability');
-        Route::post('/availability', [DriverController::class, 'setAvailability'])->name('availability.set');
 
         // Job History
         Route::get('/job-history', [DriverController::class, 'jobHistory'])->name('history');

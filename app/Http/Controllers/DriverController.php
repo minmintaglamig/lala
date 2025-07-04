@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 class DriverController extends Controller
 {
+
     // ===================== ADMIN METHODS =====================
 
     // Admin: List all drivers
@@ -165,9 +166,21 @@ class DriverController extends Controller
     // Driver: Dashboard
     public function dashboard()
     {
-        $driver = Auth::user()->driverProfile;
-        return view('driver.dashboard', compact('driver'));
+        // Get logged-in user's driver profile
+        $driver = DriverProfile::where('user_id', Auth::id())->first();
+
+        // If no driver profile, you can redirect or show message
+        if (!$driver) {
+            return redirect()->route('driver.profile.updateDriverInfoForm')
+                ->with('error', 'Please complete your driver profile first.');
+        }
+
+        // Pass availability status to view
+        $availability_status = $driver->availability_status ?? 'Not Set';
+
+        return view('driver.dashboard', compact('availability_status'));
     }
+
 
     // Driver: Show profile
     public function show()
@@ -313,21 +326,40 @@ class DriverController extends Controller
     }
 
     // Availability status
+    // For DRIVER: show own availability
     public function showAvailabilityForm()
     {
-        $driver = Auth::user()->driverProfile;
+        $driver = DriverProfile::where('user_id', Auth::id())->firstOrFail();
         return view('driver.availability', compact('driver'));
     }
 
+    // For DRIVER: update own availability
     public function setAvailability(Request $request)
     {
-        $validated = $request->validate([
-            'status' => 'required|in:Available,On Delivery,Off Duty',
+        $request->validate([
+            'availability_status' => 'required|in:Available,On Delivery,Off Duty',
         ]);
 
-        $driver = Auth::user()->driverProfile;
-        $driver->update(['availability_status' => $validated['status']]);
+        $driver = DriverProfile::where('user_id', Auth::id())->firstOrFail();
+        $driver->availability_status = $request->availability_status;
+        $driver->save();
 
-        return back()->with('success', 'Availability updated.');
+        return redirect()->back()->with('success', 'Availability status updated.');
     }
+
+    // (Optional) For ADMIN: update any driver’s availability
+    public function adminSetAvailability(Request $request, $id)
+    {
+        $request->validate([
+            'availability_status' => 'required|in:Available,On Delivery,Off Duty',
+        ]);
+
+        $driver = DriverProfile::findOrFail($id);
+        $driver->availability_status = $request->availability_status;
+        $driver->save();
+
+        return redirect()->back()->with('success', 'Driver availability updated by admin.');
+    }
+
+
 }
