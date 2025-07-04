@@ -36,17 +36,8 @@ class JobController extends Controller
 }
 
 
-public function assignNow($driver_id, $book_id)
+public function assignNow($driver_id, $book_id, $vehicle_id)
 {
-    $vehicle = Vehicle::where('driver_id', $driver_id)->first();
-    if (!$vehicle) {
-        return redirect()->back()->with('error', 'No vehicle assigned to this driver');
-    }
-
-    $driverProfile = DriverProfile::where('user_id', $driver_id)->first();
-    if (!$driverProfile) {
-        return redirect()->back()->with('error', 'Driver profile not found');
-    }
 
     $job = Job::find($book_id);
     if (!$job) {
@@ -54,12 +45,11 @@ public function assignNow($driver_id, $book_id)
     }
 
     $job->update([
-        'vehicle_id' => $vehicle->id,             
-        'driver_id' => $driverProfile->id,    
+        'vehicle_id' => $vehicle_id,             
+        'driver_id' => $driver_id,    
         'delivery_status' => 'in_progress',
     ]);
 
     return redirect()->back()->with('success', 'Driver and vehicle assigned successfully!');
 }
-
 }
