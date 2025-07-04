@@ -47,7 +47,7 @@ public function assignNow($driver_id, $book_id, $vehicle_id)
     $job->update([
         'vehicle_id' => $vehicle_id,             
         'driver_id' => $driver_id,    
-        'delivery_status' => 'in_progress',
+        'delivery_status' => 'assigned',
     ]);
 
     return redirect()->back()->with('success', 'Driver and vehicle assigned successfully!');

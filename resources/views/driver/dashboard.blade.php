@@ -3,9 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="text-3xl font-bold text-[#EA2F14]">
-    Welcome, {{ Auth::user()->name }} ({{ Auth::user()->role }})
-</div>
+    <div class="text-3xl font-bold text-[#EA2F14]">
+        Welcome, {{ Auth::user()->name }} ({{ Auth::user()->role }})
+    </div>
 
     <h2 class="mb-4 text-xl font-semibold">Your Current Status</h2>
     <div class="p-4 bg-white rounded shadow">

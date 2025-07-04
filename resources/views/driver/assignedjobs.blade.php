@@ -4,4 +4,4 @@
 
 @section('content')
     <p>assigned jobs</p>
-@endsections
+@endsection

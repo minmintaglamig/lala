@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('dropoff_address');
             $table->text('package_description');
             $table->dateTime('scheduled_time');
-            $table->enum('delivery_status', ['pending', 'in_progress', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('delivery_status', ['pending', 'in_progress', 'delivered', 'cancelled', 'assigned'])->default('pending');
             $table->string('client_name');
             $table->string('client_contact');
             $table->float('distance')->nullable();

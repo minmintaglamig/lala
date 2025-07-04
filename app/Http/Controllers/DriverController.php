@@ -270,12 +270,9 @@ class DriverController extends Controller
         // View assigned jobs
     public function assignedJobs()
     {
-        $jobs = Job::with('client')
-            ->where('driver_id', Auth::id())
-            ->whereIn('status', ['Pending', 'In Progress'])
-            ->get();
+        $jobs = Job::where('driver_id', Auth::id())->get();
 
-        return view('driver.assigned-jobs', compact('jobs'));
+        return view('admin.driver.driver_assigned', compact('jobs'));
     }
 
     // Location update form

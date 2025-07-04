@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Assigned Jobs
         Route::get('/assigned-jobs', [DriverController::class, 'assignedJobs'])->name('assignedjobs');
+        
 
         // Location Update
         Route::get('/location', [DriverController::class, 'locationPage'])->name('location');
