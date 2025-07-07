@@ -54,9 +54,10 @@
                 </div>
                 <div>
                     <label class="block mb-1 text-sm font-medium">Age</label>
-                    <input type="text" id="age" name="age" readonly value="{{ old('age') }}"
+                    <input type="text" value="{{ \Carbon\Carbon::parse($driver->date_of_birth)->age }}" readonly
                         class="w-full px-3 py-2 text-gray-700 bg-gray-100 border rounded-lg">
                 </div>
+
 
                 <div>
                     <label class="block mb-1 text-sm font-semibold text-gray-700">Gender</label>

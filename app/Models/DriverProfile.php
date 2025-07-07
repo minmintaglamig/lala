@@ -13,6 +13,8 @@ class DriverProfile extends Model
         'email',
         'address',
         'date_of_birth',
+        'age',
+        'marital_status',
         'gender',
         'emergency_contact',
         'license_number',

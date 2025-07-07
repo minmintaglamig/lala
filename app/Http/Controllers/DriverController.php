@@ -71,7 +71,7 @@ class DriverController extends Controller
 
         $driver->update($validated);
 
-        return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully!');
+        return redirect()->route('admin.driver.index')->with('success', 'Driver updated successfully!');
     }
 
     // Admin: Delete driver
@@ -80,7 +80,7 @@ class DriverController extends Controller
         $driver = DriverProfile::findOrFail($id);
         $driver->delete();
 
-        return redirect()->route('admin.drivers.index')->with('success', 'Driver deleted successfully!');
+        return redirect()->route('admin.driver.index')->with('success', 'Driver deleted successfully!');
     }
 
     // ===================== DRIVER METHODS =====================
