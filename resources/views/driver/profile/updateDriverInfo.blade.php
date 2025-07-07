@@ -52,7 +52,6 @@
                         value="{{ old('date_of_birth', $driver->date_of_birth ?? '') }}"
                         class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-500">
                 </div>
-
                 <div>
                     <label class="block mb-1 text-sm font-medium">Age</label>
                     <input type="text" id="age" name="age" readonly value="{{ old('age') }}"
@@ -70,7 +69,6 @@
                             }}>Female</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="block mb-1 text-sm font-semibold text-gray-700">Marital Status</label>
                     <select name="marital_status"
@@ -84,16 +82,21 @@
                         @endforeach
                     </select>
                 </div>
+
             </div>
 
-            <div class="flex justify-end">
+            <div class="flex justify-between">
+                <a href="{{ url()->previous() }}"
+                    class="px-6 py-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-lg hover:bg-gray-300">
+                    ← Back
+                </a>
+
                 <button type="submit" class="px-6 py-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">
                     Next: More Info
                 </button>
             </div>
         </form>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const dobInput = document.getElementById('dob');
@@ -104,8 +107,10 @@
                 const birthDate = new Date(dobValue);
                 const today = new Date();
                 let age = today.getFullYear() - birthDate.getFullYear();
-                if (today.getMonth() < birthDate.getMonth() ||
-                    (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
+                if (
+                    today.getMonth() < birthDate.getMonth() ||
+                    (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
+                ) {
                     age--;
                 }
                 ageInput.value = age;
@@ -115,4 +120,5 @@
             dobInput.addEventListener('change', e => calculateAge(e.target.value));
         });
     </script>
+
 </x-app-layout>

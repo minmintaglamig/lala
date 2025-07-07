@@ -69,10 +69,10 @@
                                 </select>
                             </form>
                         </td>
-
                         <td class="px-4 py-2">
                             @if($driver->license_image)
-                            <img src="{{ asset('storage/' . $driver->license_image) }}" class="w-16 rounded">
+                            <a href="{{ asset('storage/' . $driver->license_image) }}" target="_blank"
+                                class="text-blue-600 underline">View</a>
                             @else
                             N/A
                             @endif

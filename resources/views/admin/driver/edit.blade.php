@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-6xl p-6 mx-auto bg-white rounded-lg shadow-md">
-    <h2 class="mb-6 text-2xl font-semibold"> Driver " {{ $driver->driver_id }}"</h2>
+    <h2 class="mb-6 text-2xl font-semibold"> Driver " {{ $driver->name }}"</h2>
 
 
     <form action="{{ route('admin.driver.update', $driver->id) }}" method="POST" enctype="multipart/form-data">

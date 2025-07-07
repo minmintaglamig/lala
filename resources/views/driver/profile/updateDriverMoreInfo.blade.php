@@ -78,8 +78,8 @@
                             @foreach([
                             'Student Permit','Non-Prof A (Motorcycle)','Non-Prof A1 (Tricycles)','Non-Prof B (Light
                             Vehicles)',
-                            'Prof A (Motorcycle)','Prof A1 (Tricycles)','Prof B (Light Vehicles)','Prof B1 (Heavy
-                            Vehicles)','Prof B2 (Articulated)'
+                            'Prof A (Motorcycle)','Prof A1 (Tricycles)','Prof B (Light Vehicles)',
+                            'Prof B1 (Heavy Vehicles)','Prof B2 (Articulated)'
                             ] as $type)
                             <option value="{{ $type }}" {{ old('license_type', $driver->license_type) == $type ?
                                 'selected' : '' }}>{{ $type }}</option>
@@ -165,11 +165,15 @@
             </div>
 
             {{-- Submit --}}
-            <div class="flex mt-6 space-x-4">
-                <button type="submit" class="px-6 py-2 text-white bg-green-600 rounded hover:bg-green-700">Save Driver
-                    Info</button>
-                <a href="{{ url('/vehicles/assign/' . $driver->driver_id) }}"
-                    class="px-6 py-2 text-blue-600 border border-blue-500 rounded hover:bg-blue-50">Vehicle</a>
+            <div class="flex mt-6 justify-between">
+                <a href="{{ route('driver.profile.updateDriverInfo') }}"
+                    class="px-6 py-2 text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300">
+                    ← Back to Personal Info
+                </a>
+
+                <button type="submit" class="px-6 py-2 text-white bg-green-600 rounded hover:bg-green-700">
+                    Save Driver Info
+                </button>
             </div>
         </form>
     </div>

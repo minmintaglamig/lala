@@ -11,7 +11,6 @@ use Carbon\Carbon;
 
 class DriverController extends Controller
 {
-
     // ===================== ADMIN METHODS =====================
 
     // Admin: List all drivers
@@ -27,92 +26,15 @@ class DriverController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
         }
 
-
         $drivers = $query->paginate(10);
-
         return view('admin.driver.index', compact('drivers'));
     }
 
-
-    // Admin: form (basic info)
-    public function createdriverinfo()
-    {
-        return view('admin.drivers.create');
-    }
-
-    // Admin:  info (basic info)
-    public function storeDriverInfo(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'phone_number' => 'required|string',
-            'email' => 'nullable|email',
-            'address' => 'nullable|string',
-            'date_of_birth' => 'nullable|date',
-            'age' => 'nullable|integer',
-            'gender' => 'nullable|string',
-            'marital_status' => 'nullable|string',
-            'emergency_contact' => 'nullable|string',
-        ]);
-
-        if (!empty($validated['date_of_birth'])) {
-            $validated['age'] = Carbon::parse($validated['date_of_birth'])->age;
-        }
-
-
-
-        $driver = DriverProfile::create($validated);
-
-        return redirect()->route('admin.drivers.moreinfo', $driver->id);
-    }
-
-    // Admin: form (additional info)
-    public function createdrivermoreinfo($id)
-    {
-        $driver = DriverProfile::findOrFail($id);
-        return view('admin.drivers.moreinfo', compact('driver'));
-    }
-
-    // Admin:  additional info
-    public function storeMoreInfo(Request $request, $id)
-    {
-        $driver = DriverProfile::findOrFail($id);
-
-        $validated = $request->validate([
-            'license_number' => 'nullable|string',
-            'license_expiry' => 'nullable|date',
-            'license_type' => 'nullable|string',
-            'additional_permits' => 'nullable|string',
-            'license_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'driver_status' => 'nullable|string',
-            'hire_date' => 'nullable|date',
-            'vehicle_assigned' => 'nullable|string',
-            'route_assigned' => 'nullable|string',
-            'medical_cert_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-            'drug_test_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-        ]);
-
-        if ($request->hasFile('license_image')) {
-            $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
-        }
-        if ($request->hasFile('medical_cert_file')) {
-            $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
-        }
-        if ($request->hasFile('drug_test_file')) {
-            $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
-        }
-
-        $driver->update($validated);
-
-        return redirect()->route('admin.drivers.index')->with('success', 'Driver info updated!');
-    }
-
-    // Admin: View driver
+    // Admin: View driver (Not used)
     public function view($id)
     {
         $driver = DriverProfile::findOrFail($id);
-        return view('admin.driver.index', compact('drivers'));
-
+        return view('admin.driver.index', compact('driver'));
     }
 
     // Admin: Edit driver
@@ -163,43 +85,36 @@ class DriverController extends Controller
 
     // ===================== DRIVER METHODS =====================
 
-    // Driver: Dashboard
     public function dashboard()
     {
-        // Get logged-in user's driver profile
         $driver = DriverProfile::where('user_id', Auth::id())->first();
 
-        // If no driver profile, you can redirect or show message
         if (!$driver) {
-            return redirect()->route('driver.profile.updateDriverInfoForm')
-                ->with('error', 'Please complete your driver profile first.');
+            return redirect()->route('driver.profile.updateDriverInfoForm')->with('error', 'Please complete your driver profile first.');
         }
 
-        // Pass availability status to view
         $availability_status = $driver->availability_status ?? 'Not Set';
 
         return view('driver.dashboard', compact('availability_status'));
     }
 
-
-    // Driver: Show profile
     public function show()
     {
         $driver = Auth::user()->driverProfile;
+
         if (!$driver) {
             return redirect()->route('driver.profile.updateDriverInfoForm')->with('error', 'No profile found. Please complete your profile.');
         }
+
         return view('driver.profile.show', compact('driver'));
     }
 
-    // Driver:  update personal info
     public function edit()
     {
         $driver = Auth::user()->driverProfile;
         return view('driver.profile.updateDriverInfo', compact('driver'));
     }
 
-    // Driver:
     public function updateDriverInfo(Request $request)
     {
         $validated = $request->validate([
@@ -223,7 +138,6 @@ class DriverController extends Controller
         return redirect()->route('driver.profile.updateDriverMoreInfo');
     }
 
-    // Driver:  additional info form
     public function showDriverMoreInfoForm()
     {
         if (!session()->has('driver_info_step1')) {
@@ -234,7 +148,6 @@ class DriverController extends Controller
         return view('driver.profile.updateDriverMoreInfo', compact('driver'));
     }
 
-    // Driver: Save additional info
     public function updateDriverMoreInfo(Request $request)
     {
         $step1 = session('driver_info_step1');
@@ -264,9 +177,11 @@ class DriverController extends Controller
         if ($request->hasFile('license_image')) {
             $validated['license_image'] = $request->file('license_image')->store('licenses', 'public');
         }
+
         if ($request->hasFile('medical_cert_file')) {
             $validated['medical_cert_file'] = $request->file('medical_cert_file')->store('medical', 'public');
         }
+
         if ($request->hasFile('drug_test_file')) {
             $validated['drug_test_file'] = $request->file('drug_test_file')->store('drugs', 'public');
         }
@@ -280,23 +195,21 @@ class DriverController extends Controller
         return redirect()->route('driver.profile.show')->with('success', 'Driver profile saved successfully.');
     }
 
-    // View assigned jobs
     public function assignedJobs()
     {
         $assignedjobs = Job::where('driver_id', Auth::id())->whereIn('delivery_status', ['assigned'])->get();
         $cancelledjobs = Job::where('driver_id', Auth::id())->whereIn('delivery_status', ['cancelled'])->get();
         $deliveredjobs = Job::where('driver_id', Auth::id())->whereIn('delivery_status', ['delivered'])->get();
         $alljobs = Job::where('driver_id', Auth::id())->get();
-        return view('driver.assignedjobs', compact('assignedjobs','cancelledjobs','deliveredjobs','alljobs'));
+
+        return view('driver.assignedjobs', compact('assignedjobs', 'cancelledjobs', 'deliveredjobs', 'alljobs'));
     }
 
-    // Location update form
     public function locationPage()
     {
         return view('driver.location');
     }
 
-    // Save driver location
     public function updateLocation(Request $request)
     {
         $validated = $request->validate([
@@ -313,7 +226,6 @@ class DriverController extends Controller
         return back()->with('success', 'Location updated.');
     }
 
-    // Job History for driver
     public function jobHistory()
     {
         $jobs = Job::with('rating')
@@ -324,15 +236,12 @@ class DriverController extends Controller
         return view('driver.history', compact('jobs'));
     }
 
-    // Availability status
-    // For DRIVER: show own availability
     public function showAvailabilityForm()
     {
         $driver = DriverProfile::where('user_id', Auth::id())->firstOrFail();
         return view('driver.availability', compact('driver'));
     }
 
-    // For DRIVER: update own availability
     public function setAvailability(Request $request)
     {
         $request->validate([
@@ -346,7 +255,6 @@ class DriverController extends Controller
         return redirect()->back()->with('success', 'Availability status updated.');
     }
 
-    // (Optional) For ADMIN: update any driver’s availability
     public function adminSetAvailability(Request $request, $id)
     {
         $request->validate([
@@ -359,6 +267,4 @@ class DriverController extends Controller
 
         return redirect()->back()->with('success', 'Driver availability updated by admin.');
     }
-
-
 }

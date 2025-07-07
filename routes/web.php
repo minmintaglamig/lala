@@ -29,10 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Driver Management
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
-        Route::get('/driver/create', [DriverController::class, 'createdriverinfo'])->name('driver.create');
-        Route::post('/driver', [DriverController::class, 'storedriverinfo'])->name('driver.store');
-        Route::get('/driver/{id}/moreinfo', [DriverController::class, 'createdrivermoreinfo'])->name('driver.drivermoreinfo');
-        Route::post('/driver/{id}/moreinfo', [DriverController::class, 'storeMoreInfo'])->name('driver.storemoreinfo');
         Route::get('/driver/{id}/edit', [DriverController::class, 'editDriver'])->name('driver.edit');
         Route::put('/driver/{id}', [DriverController::class, 'updateDriver'])->name('driver.update');
         Route::delete('/driver/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
@@ -43,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Vehicle Management
         Route::prefix('driver')->middleware(['auth'])->name('driver.')->group(function () {
-        Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle');
+            Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle');
         });
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
