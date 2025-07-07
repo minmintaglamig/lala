@@ -143,6 +143,11 @@
                 <input type="hidden" id="dropoff_address" name="dropoff_address">
                 <input type="hidden" id="distance_km" name="distance_km">
                 <input type="hidden" id="price_php" name="price_php">
+                <input type="hidden" id="pickup_lat" name="pickup_latitude">
+                <input type="hidden" id="pickup_lng" name="pickup_longitude">
+                <input type="hidden" id="dropoff_lat" name="dropoff_latitude">
+                <input type="hidden" id="dropoff_lng" name="dropoff_longitude">
+
             </div>
 
 

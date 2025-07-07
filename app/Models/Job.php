@@ -23,5 +23,9 @@ class Job extends Model
         'client_contact',
         'distance',
         'price',
+            'pickup_latitude',
+    'pickup_longitude',
+    'dropoff_latitude',
+    'dropoff_longitude',
     ];
 }
