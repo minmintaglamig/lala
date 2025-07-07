@@ -15,16 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('client_id')->nullable();
             // $table->foreignId('driver_id')->nullable()->constrained('driver_profiles')->onDelete('set null');
-            $table->foreignId('driver_id')
-            ->constrained('driver_profiles', 'user_id')
-            ->onDelete('set null');
+            // $table->foreignId('driver_id')
+            // ->constrained('driver_profiles', 'user_id')
+            // ->onDelete('set null');
+            $table->string('driver_id');
             $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
             $table->string('vehicle_type')->nullable();
             $table->string('pickup_address');
             $table->string('dropoff_address');
             $table->text('package_description');
             $table->dateTime('scheduled_time');
-            $table->enum('delivery_status', ['pending', 'in_progress', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('delivery_status', ['pending', 'in_progress', 'delivered', 'cancelled', 'assigned'])->default('pending');
             $table->string('client_name');
             $table->string('client_contact');
             $table->float('distance')->nullable();
