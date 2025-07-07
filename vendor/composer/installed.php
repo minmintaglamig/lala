@@ -2,9 +2,8 @@
     'root' => array(
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
-        'version' => 'dev-main'
-
-        'reference' => '729777a5e7f8f97d44345c259e981de2a528ab2e'
+        'version' => 'dev-main',
+        'reference' => 'a70df1451d8fd7ed99f77bd76b128191cccdba83',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -434,9 +433,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-
-            'reference' => '729777a5e7f8f97d44345c259e981de2a528ab2e',
-
+            'reference' => 'a70df1451d8fd7ed99f77bd76b128191cccdba83',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -452,9 +449,9 @@
             'dev_requirement' => true,
         ),
         'laravel/pint' => array(
-            'pretty_version' => 'v1.22.1',
-            'version' => '1.22.1.0',
-            'reference' => '941d1927c5ca420c22710e98420287169c7bcaf7',
+            'pretty_version' => 'v1.23.0',
+            'version' => '1.23.0.0',
+            'reference' => '9ab851dba4faa51a3c3223dd3d07044129021024',
             'type' => 'project',
             'install_path' => __DIR__ . '/../laravel/pint',
             'aliases' => array(),
@@ -593,9 +590,9 @@
             ),
         ),
         'myclabs/deep-copy' => array(
-            'pretty_version' => '1.13.1',
-            'version' => '1.13.1.0',
-            'reference' => '1720ddd719e16cf0db4eb1c6eca108031636d46c',
+            'pretty_version' => '1.13.3',
+            'version' => '1.13.3.0',
+            'reference' => 'faed855a7b5f4d4637717c2b3863e277116beb36',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
@@ -728,9 +725,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '11.5.25',
-            'version' => '11.5.25.0',
-            'reference' => '864ab32b3ff52058f917c5b19b3cef821e4a4f1b',
+            'pretty_version' => '11.5.26',
+            'version' => '11.5.26.0',
+            'reference' => '4ad8fe263a0b55b54a8028c38a18e3c5bef312e0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),

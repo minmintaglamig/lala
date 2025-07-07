@@ -7,6 +7,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', fn() => view('index'));
 
@@ -25,7 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // ADMIN ROUTES
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
         // Driver Management
         Route::get('/driver', [DriverController::class, 'index'])->name('driver.index');
