@@ -29,6 +29,8 @@ class ClientController extends Controller
 
         Job::create([
             'client_id' => Auth::id(),
+            'driver_id' => null,
+            'vehicle_id' => null,
             'pickup_address' => $validated['pickup_address'],
             'dropoff_address' => $validated['dropoff_address'],
             'package_description' => $validated['package_description'],
