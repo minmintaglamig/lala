@@ -42,6 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         // Vehicle Management
+        Route::prefix('driver')->middleware(['auth'])->name('driver.')->group(function () {
+        Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle');
+        });
         Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
         Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicles.create');
 

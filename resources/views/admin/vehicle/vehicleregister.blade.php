@@ -12,12 +12,26 @@
             <x-input-error :messages="$errors->get('plate_number')" class="mt-2" />
         </div>
 
-        <!-- Type -->
+        <!-- Vehicle Type -->
         <div class="mt-4">
-            <x-input-label for="type" :value="__('Vehicle Type')" />
-            <x-text-input id="type" class="block mt-1 w-full" type="text" name="type" :value="old('type')"
-                required />
-            <x-input-error :messages="$errors->get('type')" class="mt-2" />
+        <x-input-label for="type" :value="__('Vehicle Type')" />
+        <select id="type" name="type"
+        class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+        required>
+        <option value="" disabled {{ old('type') ? '' : 'selected' }}>Select a vehicle type</option>
+        <option value="Bicycle" {{ old('type') == 'Bicycle' ? 'selected' : '' }}>Bicycle</option>
+        <option value="Motorcycle" {{ old('type') == 'Motorcycle' ? 'selected' : '' }}>Motorcycle</option>
+        <option value="Car" {{ old('type') == 'Car' ? 'selected' : '' }}>Car</option>
+        <option value="Truck" {{ old('type') == 'Truck' ? 'selected' : '' }}>Truck</option>
+        <option value="Van" {{ old('type') == 'Van' ? 'selected' : '' }}>Van</option>
+        <option value="Bus" {{ old('type') == 'Bus' ? 'selected' : '' }}>Bus</option>
+        <option value="Boat" {{ old('type') == 'Boat' ? 'selected' : '' }}>Boat</option>
+        <option value="Airplane" {{ old('type') == 'Airplane' ? 'selected' : '' }}>Airplane</option>
+        <option value="Train" {{ old('type') == 'Train' ? 'selected' : '' }}>Train</option>
+        <option value="Helicopter" {{ old('type') == 'Helicopter' ? 'selected' : '' }}>Helicopter</option>
+        <option value="Scooter" {{ old('type') == 'Scooter' ? 'selected' : '' }}>Scooter</option>
+        </select>
+    <x-input-error :messages="$errors->get('type')" class="mt-2" />
         </div>
 
         <!-- Model -->

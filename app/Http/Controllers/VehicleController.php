@@ -29,7 +29,7 @@ public function index()
         }
 
         // Fetch only the vehicles belonging to that driver
-        $vehicles = Vehicle::where('driver_id', $driver->id)->get();
+        $vehicles = Vehicle::where('driver_id', $driver->user_id)->get();
     }
 
     return view('admin.vehicle.index', compact('vehicles'));
@@ -46,26 +46,26 @@ public function index()
         return redirect()->back()->with('error', 'Driver profile not found.');
     }
 
-    return view('admin.vehicle.vehicleregister', ['driverId' => $driver->id]);
+    return view('admin.vehicle.vehicleregister', ['driverId' => $driver->user_id]);
     }
 
 
     // Handle vehicle form submission
     public function store(Request $request)
-    {
-        $request->validate([
-            'driver_id' => 'required|exists:driver_profiles,id',
-            'plate_number' => 'required|string|unique:vehicles',
-            'model' => 'required|string',
-            'type' => 'required|string',
-            'capacity' => 'required|integer',
-            'status' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'driver_id' => 'required|exists:driver_profiles,user_id',
+        'plate_number' => 'required|string|unique:vehicles',
+        'model' => 'required|string',
+        'type' => 'required|string',
+        'capacity' => 'required|integer',
+        'status' => 'required|string',
+    ]);
 
-        Vehicle::create($request->all());
-        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle registered successfully!');
+    Vehicle::create($request->all());
 
-    }
+    return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle registered successfully!');
+}
 
     public function edit($id)
     {
