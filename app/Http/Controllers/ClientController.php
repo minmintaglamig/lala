@@ -62,7 +62,7 @@ class ClientController extends Controller
     {
         $jobs = Job::with('driver', 'rating')
             ->where('client_id', Auth::id())
-            ->where('status', 'Delivered')
+            ->where('delivery_status', 'delivered')
             ->get();
 
         return view('client.history', compact('jobs'));

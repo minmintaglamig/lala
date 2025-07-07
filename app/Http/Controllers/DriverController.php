@@ -285,10 +285,10 @@ class DriverController extends Controller
     {
         $jobs = Job::with('client')
             ->where('driver_id', Auth::id())
-            ->whereIn('status', ['Pending', 'In Progress'])
+            ->whereIn('delivery_status', ['pending', 'in_progress'])
             ->get();
 
-        return view('driver.assigned-jobs', compact('jobs'));
+        return view('driver.assignedjobs', compact('jobs'));
     }
 
     // Location update form
@@ -319,10 +319,10 @@ class DriverController extends Controller
     {
         $jobs = Job::with('rating')
             ->where('driver_id', Auth::id())
-            ->where('status', 'Delivered')
+            ->where('delivery_status', 'delivered')
             ->get();
 
-        return view('driver.job-history', compact('jobs'));
+        return view('driver.history', compact('jobs'));
     }
 
     // Availability status

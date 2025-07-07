@@ -24,7 +24,7 @@ class JobController extends Controller
 
     $userIds = $availdriver->pluck('user_id');
 
-    $availvehicle = Vehicle::where('status', 'available')
+    $availvehicle = Vehicle::where('delivery_status', 'available')
         ->whereIn('driver_id', $userIds)
         ->get();
 

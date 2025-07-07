@@ -67,14 +67,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         // Assigned Jobs
-        Route::get('/assigned-jobs', [DriverController::class, 'assignedJobs'])->name('assignedjobs');
+        Route::get('/assignedjobs', [DriverController::class, 'assignedJobs'])->name('assignedjobs');
 
         // Location Update
         Route::get('/location', [DriverController::class, 'locationPage'])->name('location');
         Route::post('/location/update', [DriverController::class, 'updateLocation'])->name('location.update');
 
         // Job History
-        Route::get('/job-history', [DriverController::class, 'jobHistory'])->name('history');
+        Route::get('/history', [DriverController::class, 'jobHistory'])->name('history');
     });
 
     // CLIENT ROUTES
