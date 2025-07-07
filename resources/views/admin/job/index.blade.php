@@ -57,6 +57,8 @@
             font-weight: bold;
             color: #9ca3af;
         }
+
+        /*  */
     </style>
 
     <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
