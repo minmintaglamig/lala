@@ -14,6 +14,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('admin.vehicle.index') }}"
+            class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.vehicle') ? 'font-bold underline' : '' }}">
+            Vehicle
+            </a>
+        </li>
+        <li>
             <a href="{{ route('driver.assignedjobs') }}"
                 class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.assignedjobs') ? 'font-bold underline' : '' }}">
                 My Assigned Jobs
