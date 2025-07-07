@@ -14,7 +14,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('admin.vehicle.index') }}"
+            <a href="{{ route('driver.vehicle.index') }}"
             class="block hover:text-[#FCEF91] {{ request()->routeIs('driver.vehicle') ? 'font-bold underline' : '' }}">
             Vehicle
             </a>

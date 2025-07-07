@@ -14,26 +14,25 @@ class VehicleController extends Controller
 
 public function index()
 {
-    // Get the logged-in user
     $user = Auth::user();
 
-    // If the user is an admin, show all vehicles
     if ($user->role === 'admin') {
         $vehicles = Vehicle::all();
+        return view('admin.vehicle.index', compact('vehicles'));
     } else {
-        // For non-admin users, find their driver profile
         $driver = DriverProfile::where('user_id', $user->id)->first();
 
         if (!$driver) {
             return redirect()->back()->with('error', 'Driver profile not found.');
         }
 
-        // Fetch only the vehicles belonging to that driver
         $vehicles = Vehicle::where('driver_id', $driver->user_id)->get();
-    }
 
-    return view('admin.vehicle.index', compact('vehicles'));
+        // 👇 Return a different view for drivers
+        return view('driver.vehicle.index', compact('vehicles'));
+    }
 }
+
 
 
     // Show the form to register a new vehicle

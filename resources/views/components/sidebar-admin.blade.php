@@ -16,7 +16,7 @@
         <li>
             <a href="{{ route('vehicleniash.vehicleniash.index') }}"
                 class="block hover:text-[#FCEF91] {{ request()->routeIs('vehicleniash.vehicleniash.index') ? 'font-bold underline' : '' }}">
-                Vehiclesssd
+                Vehicles
             </a>
         </li>
         <li>
