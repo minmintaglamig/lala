@@ -78,6 +78,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Job History
         Route::get('/history', [DriverController::class, 'jobHistory'])->name('history');
+
+         // Vehicle
+        Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
+
     });
 
     // CLIENT ROUTES
