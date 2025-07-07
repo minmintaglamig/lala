@@ -82,6 +82,12 @@
         const p = pickupMarker.getLatLng();
         const d = dropoffMarker.getLatLng();
 
+        document.getElementById("pickup_lat").value = p.lat;
+        document.getElementById("pickup_lng").value = p.lng;
+
+        document.getElementById("dropoff_lat").value = d.lat;
+        document.getElementById("dropoff_lng").value = d.lng;
+
         reverseGeocode(p.lat, p.lng, (pickupAddress) => {
             document.getElementById("pickup_display").innerText = pickupAddress;
             document.getElementById("pickup_address").value = pickupAddress;

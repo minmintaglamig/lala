@@ -95,6 +95,10 @@ class ClientController extends Controller
             'price_php'=> 'required',
             'package_description' => 'required|string|max:255',
             'scheduled_time' => 'required',
+            'pickup_latitude' => 'string|max:255',
+            'pickup_longitude' => 'string|max:255',
+            'dropoff_latitude' => 'string|max:255',
+            'dropoff_longitude' => 'string|max:255',
         ]);
 
         Job::create([
@@ -108,6 +112,10 @@ class ClientController extends Controller
             'price'=> $request->price_php,
             'package_description'=> $request->package_description,
             'scheduled_time'=> $request->scheduled_time,
+            'pickup_latitude' => $request->pickup_latitude,
+            'pickup_longitude' => $request->pickup_longitude,
+            'dropoff_latitude' => $request->dropoff_latitude,
+            'dropoff_longitude' => $request->dropoff_longitude,
         ]);
 
         return redirect()->route('client.dashboard')->with('success', 'Booking successfully created!');

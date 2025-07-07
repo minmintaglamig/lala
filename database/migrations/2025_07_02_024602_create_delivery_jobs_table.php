@@ -29,6 +29,10 @@ return new class extends Migration
             $table->string('client_contact');
             $table->float('distance')->nullable();
             $table->float('price')->nullable();
+            $table->string('pickup_longitude')->nullable();
+            $table->string('pickup_latitude')->nullable();
+            $table->string('dropoff_longitude')->nullable();
+            $table->string('dropoff_latitude')->nullable();
             $table->timestamps();
         });
     }
