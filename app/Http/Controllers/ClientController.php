@@ -12,11 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClientController extends Controller
 {
-    public function showBookingForm()
-    {
-        return view('client.book');
-    }
-
+    
     public function submitBooking(Request $request)
     {
         $validated = $request->validate([
@@ -43,13 +39,14 @@ class ClientController extends Controller
     }
 
     public function myRequests()
-    {
-        $jobs = Job::with('driver')
-            ->where('client_id', Auth::id())
-            ->get();
+{
+    $jobs = Job::with('driver')
+        ->where('client_id', Auth::id())
+        ->latest()
+        ->get();
 
-        return view('client.requests', compact('jobs'));
-    }
+    return view('client.requests', compact('jobs'));
+}
 
     public function trackStatus()
     {

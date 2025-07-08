@@ -18,7 +18,8 @@ return new class extends Migration
             // $table->foreignId('driver_id')
             // ->constrained('driver_profiles', 'user_id')
             // ->onDelete('set null');
-            $table->string('driver_id')->nullable;
+            $table->string('driver_id')->nullable();
+
             $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
             $table->string('vehicle_type')->nullable();
             $table->string('pickup_address');
