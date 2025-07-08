@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Job extends Model
 {
     protected $table = 'delivery_jobs';
@@ -28,4 +29,12 @@ class Job extends Model
     'dropoff_latitude',
     'dropoff_longitude',
     ];
+
+public function driver()
+{
+    return $this->belongsTo(User::class, 'driver_id');
 }
+
+}
+
+
