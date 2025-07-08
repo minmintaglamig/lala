@@ -119,4 +119,8 @@ class ClientController extends Controller
 
         return redirect()->route('client.dashboard')->with('success', 'Booking successfully created!');
     }
+    public function showBookingForm()
+{
+    return view('client.book');
+}
 }
