@@ -21,7 +21,7 @@
     <div>
         @include('components.sidebar-driver')
 
-        <main class="min-h-screen p-6 ml-64">
+        <main class="min-h-screen pt-2 px-6 pb-6 ml-64">
             <h1 class="text-2xl font-bold mb-4 text-[#EA2F14]">@yield('title')</h1>
             @yield('content')
         </main>
